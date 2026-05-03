@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\CSharp_projects\\ThermalBreakSelector_v3\\ThermalBreakSelector\\ThermalBreakSelector.csproj": {}
+    "c:\\CSharp_projects\\ThermalBreakSelector_v3\\ThermalBreakSelector\\ThermalBreakSelector.csproj": {}
   },
   "projects": {
-    "C:\\CSharp_projects\\ThermalBreakSelector_v3\\ThermalBreakSelector\\ThermalBreakSelector.csproj": {
+    "c:\\CSharp_projects\\ThermalBreakSelector_v3\\ThermalBreakSelector\\ThermalBreakSelector.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\CSharp_projects\\ThermalBreakSelector_v3\\ThermalBreakSelector\\ThermalBreakSelector.csproj",
+        "projectUniqueName": "c:\\CSharp_projects\\ThermalBreakSelector_v3\\ThermalBreakSelector\\ThermalBreakSelector.csproj",
         "projectName": "ThermalBreakSelector",
-        "projectPath": "C:\\CSharp_projects\\ThermalBreakSelector_v3\\ThermalBreakSelector\\ThermalBreakSelector.csproj",
+        "projectPath": "c:\\CSharp_projects\\ThermalBreakSelector_v3\\ThermalBreakSelector\\ThermalBreakSelector.csproj",
         "packagesPath": "C:\\Users\\jakub\\.nuget\\packages\\",
-        "outputPath": "C:\\CSharp_projects\\ThermalBreakSelector_v3\\ThermalBreakSelector\\obj\\",
+        "outputPath": "c:\\CSharp_projects\\ThermalBreakSelector_v3\\ThermalBreakSelector\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\jakub\\AppData\\Roaming\\NuGet\\NuGet.Config",

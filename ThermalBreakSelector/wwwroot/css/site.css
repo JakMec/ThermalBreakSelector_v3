@@ -1,31 +1,52 @@
-html {
-  font-size: 14px;
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
+/* Thin scrollbars */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #f1f5f9; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
+/* Remove number input spinners */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+input[type=number] { -moz-appearance: textfield; }
 
-html {
-  position: relative;
-  min-height: 100%;
-}
+/* Print: hide controls, show only the table */
+@media print {
+    nav,
+    #left-sidebar,
+    #overlay-panel,
+    .flex.justify-between,
+    #edit-modal {
+        display: none !important;
+    }
 
-body {
-  margin-bottom: 60px;
-}
+    html, body {
+        height: auto !important;
+        overflow: visible !important;
+    }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
-}
+    #app {
+        display: block !important;
+        height: auto !important;
+    }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+    #results-table {
+        width: 100%;
+        font-size: 9pt;
+        border-collapse: collapse;
+    }
+
+    #results-table th,
+    #results-table td {
+        padding: 3px 6px !important;
+        border: 1px solid #999 !important;
+    }
 }
