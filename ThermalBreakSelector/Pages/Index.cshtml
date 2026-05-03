@@ -1,0 +1,359 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Thermal Break Selector";
+    Layout = "_Layout";
+}
+
+<div id="app" class="flex h-screen overflow-hidden text-xs">
+
+    <!-- Narrow left navigation -->
+    <nav class="w-10 bg-gray-100 border-r border-gray-200 flex flex-col items-center py-2 gap-1 shrink-0 z-10">
+        <button onclick="navTo('main')" class="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-200 text-gray-600" title="Main">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+            </svg>
+        </button>
+        <button onclick="navTo('project')" class="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-200 text-gray-600" title="Project settings">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+            </svg>
+        </button>
+        <button onclick="navTo('file')" class="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-200 text-gray-600" title="File operations">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+        </button>
+    </nav>
+
+    <!-- Overlay panels -->
+    <div id="overlay-panel" class="hidden absolute left-10 top-0 bottom-0 w-64 bg-white border-r border-gray-200 shadow-lg z-40 overflow-y-auto">
+
+        <!-- Project settings panel -->
+        <div id="panel-project" class="hidden p-4">
+            <div class="font-semibold text-sm mb-3">Project settings</div>
+            <div class="border border-gray-300 rounded p-3 mb-3">
+                <div class="text-orange-500 font-semibold mb-2">Designer</div>
+                <label class="text-gray-600 block mb-1">Company:</label>
+                <input type="text" id="proj-designer-company" placeholder="Placeholder"
+                       class="w-full border border-gray-300 rounded px-2 py-1 mb-2">
+                <label class="text-gray-600 block mb-1">Address:</label>
+                <input type="text" id="proj-designer-address" placeholder="Placeholder"
+                       class="w-full border border-gray-300 rounded px-2 py-1 mb-2">
+                <label class="text-gray-600 block mb-1">Phone:</label>
+                <input type="text" id="proj-designer-phone" placeholder="Placeholder"
+                       class="w-full border border-gray-300 rounded px-2 py-1 mb-2">
+                <label class="text-gray-600 block mb-1">Name:</label>
+                <input type="text" id="proj-designer-name" placeholder="Placeholder"
+                       class="w-full border border-gray-300 rounded px-2 py-1 mb-2">
+                <label class="text-gray-600 block mb-1">Email:</label>
+                <input type="text" id="proj-designer-email" placeholder="Placeholder"
+                       class="w-full border border-gray-300 rounded px-2 py-1">
+            </div>
+            <div class="border border-gray-300 rounded p-3">
+                <div class="text-orange-500 font-semibold mb-2">Project</div>
+                <label class="text-gray-600 block mb-1">Company:</label>
+                <input type="text" id="proj-company" placeholder="Placeholder"
+                       class="w-full border border-gray-300 rounded px-2 py-1 mb-2">
+                <label class="text-gray-600 block mb-1">Location:</label>
+                <input type="text" id="proj-location" placeholder="Placeholder"
+                       class="w-full border border-gray-300 rounded px-2 py-1 mb-2">
+                <label class="text-gray-600 block mb-1">Contact person:</label>
+                <input type="text" id="proj-contact" placeholder="Placeholder"
+                       class="w-full border border-gray-300 rounded px-2 py-1 mb-2">
+                <label class="text-gray-600 block mb-1">Comments:</label>
+                <textarea id="proj-comments" placeholder="Placeholder" rows="4"
+                          class="w-full border border-gray-300 rounded px-2 py-1 resize-none"></textarea>
+            </div>
+        </div>
+
+        <!-- File operations panel -->
+        <div id="panel-file" class="hidden p-4">
+            <div class="font-semibold text-sm mb-3">File</div>
+            <div class="flex flex-col gap-2">
+                <button onclick="openFile()"
+                        class="border border-gray-300 rounded px-3 py-2 text-left hover:bg-gray-50">Open file</button>
+                <button onclick="saveAsJSON()"
+                        class="border border-gray-300 rounded px-3 py-2 text-left hover:bg-gray-50">Save as</button>
+                <button onclick="printPDF()"
+                        class="border border-gray-300 rounded px-3 py-2 text-left text-blue-600 hover:bg-gray-50">Print PDF</button>
+                <button onclick="exportCSV()"
+                        class="border border-gray-300 rounded px-3 py-2 text-left text-blue-600 hover:bg-gray-50">Export CSV</button>
+                <button onclick="importCSV()"
+                        class="border border-gray-300 rounded px-3 py-2 text-left text-blue-600 hover:bg-gray-50">Import CSV</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Left sidebar -->
+    <div id="left-sidebar" class="w-64 shrink-0 overflow-y-auto border-r border-gray-200 bg-white">
+
+        <!-- Section 1: Global inputs -->
+        <div class="border border-gray-300 m-2 p-2 rounded">
+
+            <!-- Type of support -->
+            <div class="text-teal-600 font-semibold mb-1">Type of support</div>
+            <div class="flex gap-1 mb-2">
+                <!-- Slab-to-Slab -->
+                <button id="support-slab-slab" onclick="setSupport('slab-slab')" title="Slab-to-Slab"
+                        class="support-btn flex-1 border-2 border-teal-500 bg-teal-500 text-white rounded p-1 flex justify-center items-center">
+                    <svg viewBox="0 0 36 36" class="w-8 h-8" fill="currentColor">
+                        <rect x="1" y="1" width="34" height="7" rx="1"/>
+                        <rect x="15" y="8" width="6" height="20"/>
+                        <rect x="1" y="28" width="34" height="7" rx="1"/>
+                    </svg>
+                </button>
+                <!-- Slab-to-Wall -->
+                <button id="support-slab-wall" onclick="setSupport('slab-wall')" title="Slab-to-Wall"
+                        class="support-btn flex-1 border border-gray-300 bg-white text-gray-600 rounded p-1 flex justify-center items-center">
+                    <svg viewBox="0 0 36 36" class="w-8 h-8" fill="currentColor">
+                        <rect x="1" y="1" width="22" height="7" rx="1"/>
+                        <rect x="15" y="8" width="6" height="20"/>
+                        <rect x="27" y="1" width="8" height="34" rx="1"/>
+                    </svg>
+                </button>
+                <!-- Horizontal el. -->
+                <button id="support-horizontal" onclick="setSupport('horizontal')" title="Horizontal el."
+                        class="support-btn flex-1 border border-gray-300 bg-white text-gray-600 rounded p-1 flex justify-center items-center">
+                    <svg viewBox="0 0 36 36" class="w-8 h-8" fill="currentColor">
+                        <rect x="1" y="1" width="8" height="34" rx="1"/>
+                        <rect x="9" y="15" width="18" height="6"/>
+                        <rect x="27" y="1" width="8" height="34" rx="1"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Bending moment -->
+            <div class="text-teal-600 mb-1">Bending moment [kNm/m]</div>
+            <div class="flex gap-1 mb-2">
+                <input type="number" id="bending-moment" placeholder="Bending moment" step="any"
+                       class="flex-1 border border-gray-300 rounded px-2 py-1 min-w-0 bg-white text-gray-900">
+                <button id="btn-bm-ccw" onclick="setLoadDir('bm','ccw')" title="Counter-clockwise (positive)"
+                        class="border border-gray-300 bg-white rounded px-1.5 py-1 text-gray-500 hover:bg-gray-100 leading-none">&#8634;</button>
+                <button id="btn-bm-cw" onclick="setLoadDir('bm','cw')" title="Clockwise (negative)"
+                        class="border border-gray-300 bg-white rounded px-1.5 py-1 text-gray-500 hover:bg-gray-100 leading-none">&#8635;</button>
+            </div>
+
+            <!-- Shear load -->
+            <div class="text-teal-600 mb-1">Shear load [kN/m]</div>
+            <div class="flex gap-1 mb-2">
+                <input type="number" id="shear-load" placeholder="Shear load" step="any"
+                       class="flex-1 border border-gray-300 rounded px-2 py-1 min-w-0 bg-white text-gray-900">
+                <button id="btn-sl-up" onclick="setLoadDir('sl','up')" title="Upward"
+                        class="border border-gray-300 bg-white rounded px-1.5 py-1 text-gray-500 hover:bg-gray-100 leading-none">&#8593;</button>
+                <button id="btn-sl-down" onclick="setLoadDir('sl','down')" title="Downward"
+                        class="border border-gray-300 bg-white rounded px-1.5 py-1 text-gray-500 hover:bg-gray-100 leading-none">&#8595;</button>
+            </div>
+
+            <!-- Horizontal load -->
+            <div class="text-teal-600 mb-1">Horizontal load [kN]</div>
+            <div class="flex gap-1 mb-2">
+                <input type="number" id="horizontal-load" placeholder="Horizontal load" step="any" disabled
+                       class="flex-1 border border-gray-300 rounded px-2 py-1 min-w-0 bg-gray-100 text-gray-400 cursor-not-allowed">
+                <button id="btn-hl-left" onclick="setLoadDir('hl','left')" title="Left"
+                        class="border border-gray-300 bg-white rounded px-1.5 py-1 text-gray-500 hover:bg-gray-100 leading-none">&#8592;</button>
+                <button id="btn-hl-right" onclick="setLoadDir('hl','right')" title="Right"
+                        class="border border-gray-300 bg-white rounded px-1.5 py-1 text-gray-500 hover:bg-gray-100 leading-none">&#8594;</button>
+            </div>
+
+            <!-- Balcony connector height -->
+            <div class="text-teal-600 mb-1">Balcony connector height</div>
+            <select id="connector-height" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white"></select>
+
+            <!-- Balcony slab concrete grade -->
+            <div class="text-teal-600 mb-1">Balcony slab concrete grade</div>
+            <select id="concrete-grade" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white">
+                <option>C20/25</option>
+                <option selected>C25/30</option>
+                <option>C30/37</option>
+            </select>
+
+            <!-- Thermal insulation thickness -->
+            <div class="text-teal-600 mb-1">Thermal insulation thickness</div>
+            <div class="flex mb-2">
+                <button id="btn-iso80" onclick="selectInsulation('iso80')"
+                        class="flex-1 border border-teal-500 rounded-l py-1 bg-teal-500 text-white">ISO 80</button>
+                <button id="btn-iso120" onclick="selectInsulation('iso120')"
+                        class="flex-1 border border-gray-300 rounded-r py-1 bg-white text-gray-700">ISO 120</button>
+            </div>
+
+            <!-- Thermal break type -->
+            <div class="text-teal-600 mb-1">Thermal break type</div>
+            <div class="flex mb-2">
+                <button id="btn-ebea" onclick="selectBreakType('ebea')"
+                        class="flex-1 border border-teal-500 rounded-l py-1 bg-teal-500 text-white">EBEA</button>
+                <button id="btn-tebea" onclick="selectBreakType('tebea')"
+                        class="flex-1 border border-gray-300 rounded-r py-1 bg-white text-gray-700">TEBEA</button>
+            </div>
+
+            <!-- Concrete cover + Maximum utilization -->
+            <div class="flex gap-2 mb-2">
+                <div class="flex-1">
+                    <div class="text-teal-600 mb-1">Concrete cover</div>
+                    <select id="concrete-cover" class="w-full border border-gray-300 rounded px-2 py-1 bg-white">
+                        <option value="CC35" selected>CC35</option>
+                        <option value="CC55">CC55</option>
+                    </select>
+                </div>
+                <div class="flex-1">
+                    <div class="text-teal-600 mb-1">Maximum utilization</div>
+                    <input type="number" id="max-utilization" value="100" min="0" max="200"
+                           class="w-full border border-gray-300 rounded px-2 py-1 bg-white text-gray-900">
+                </div>
+            </div>
+
+            <!-- Select button -->
+            <button onclick="selectProduct()"
+                    class="w-full border border-gray-300 bg-gray-100 hover:bg-gray-200 py-1.5 rounded mt-1">Select</button>
+        </div>
+
+        <!-- Section 2: Selected type -->
+        <div class="border border-gray-300 m-2 p-2 rounded">
+
+            <!-- TEBEA panel -->
+            <div id="panel-tebea" class="hidden">
+                <div class="text-teal-600 mb-1">Selected type</div>
+                <select id="selected-type-tebea" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white">
+                    <option value="">Select</option>
+                </select>
+
+                <div class="text-teal-600 mb-1">Connector length [mm]</div>
+                <select id="connector-length-tebea" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white"></select>
+
+                <div class="text-teal-600 mb-1">Anchorage length [mm]</div>
+                <select id="anchorage-length-tebea" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white"></select>
+
+                <div class="text-teal-600 mb-1">Position name</div>
+                <input type="text" id="position-name-tebea" placeholder="Position"
+                       class="w-full border border-gray-300 rounded px-2 py-1 mb-2">
+
+                <div class="flex gap-2 mt-1">
+                    <input type="number" id="quantity-tebea" value="1" min="1"
+                           class="w-16 border border-gray-300 rounded px-2 py-1 bg-white text-gray-900">
+                    <button onclick="addToList('tebea')"
+                            class="flex-1 bg-teal-500 hover:bg-teal-600 text-white rounded py-1">Add to list</button>
+                </div>
+            </div>
+
+            <!-- EBEA panel -->
+            <div id="panel-ebea">
+                <div class="text-teal-600 mb-1">Connector length [mm]</div>
+                <select id="connector-length-ebea" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white"></select>
+
+                <div class="text-teal-600 mb-1">Anchorage length [mm]</div>
+                <select id="anchorage-length-ebea" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white"></select>
+
+                <div class="text-teal-600 mb-1">Extra insulation on the top [mm]</div>
+                <select id="extra-ins-top" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white"></select>
+
+                <div class="text-teal-600 mb-1">Extra insulation in the bottom [mm]</div>
+                <select id="extra-ins-bottom" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white"></select>
+
+                <div class="flex items-center gap-2 mb-2">
+                    <button onclick="toggleCrossbar()" id="crossbar-btn"
+                            class="w-6 h-6 border-2 border-gray-400 rounded-full flex items-center justify-center text-gray-400 hover:border-gray-600 shrink-0">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                    <span class="text-gray-700">Without crossbar</span>
+                </div>
+
+                <div class="text-teal-600 mb-1">Position name</div>
+                <input type="text" id="position-name-ebea" placeholder="Position"
+                       class="w-full border border-gray-300 rounded px-2 py-1 mb-2">
+
+                <div class="flex gap-2 mt-1">
+                    <input type="number" id="quantity-ebea" value="1" min="1"
+                           class="w-16 border border-gray-300 rounded px-2 py-1 bg-white text-gray-900">
+                    <button onclick="addToList('ebea')"
+                            class="flex-1 bg-teal-500 hover:bg-teal-600 text-white rounded py-1">Add to list</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right main content -->
+    <div class="flex-1 flex flex-col overflow-hidden p-2 min-w-0">
+
+        <!-- Action buttons -->
+        <div class="flex justify-between mb-2 shrink-0">
+            <div class="flex gap-2">
+                <button onclick="importCSV()"
+                        class="border border-gray-300 rounded px-3 py-1 hover:bg-gray-50">Import CSV</button>
+                <button onclick="deleteSelected()" title="Delete selected rows"
+                        class="border border-gray-300 rounded px-2 py-1 hover:bg-gray-50 flex items-center text-gray-600">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="saveAsJSON()"
+                        class="border border-gray-300 rounded px-3 py-1 hover:bg-gray-50">Save as</button>
+                <button onclick="printPDF()"
+                        class="border border-gray-300 rounded px-3 py-1 hover:bg-gray-50">Print PDF</button>
+                <button onclick="exportCSV()"
+                        class="border border-gray-300 rounded px-3 py-1 hover:bg-gray-50">Export CSV</button>
+            </div>
+        </div>
+
+        <!-- Results table -->
+        <div class="overflow-auto flex-1 border border-gray-200 rounded">
+            <table class="border-collapse whitespace-nowrap" id="results-table">
+                <thead>
+                    <tr>
+                        <th class="border border-gray-300 bg-gray-50 px-2 py-1 w-8 text-center">
+                            <input type="checkbox" id="select-all" onchange="toggleSelectAll(this.checked)" class="cursor-pointer">
+                        </th>
+                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-left font-medium">No.</th>
+                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-left font-medium">Position</th>
+                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-left font-medium">Connector</th>
+                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">Length [mm]</th>
+                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">Quantity [pcs]</th>
+                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-center font-medium">Edit</th>
+                        <th class="border border-gray-300 bg-orange-400 text-white px-3 py-1 text-right font-medium">mEd [kNm/m]</th>
+                        <th class="border border-gray-300 bg-orange-400 text-white px-3 py-1 text-right font-medium">mRd [kNm/m]</th>
+                        <th class="border border-gray-300 bg-orange-400 text-white px-3 py-1 text-center font-medium">&eta;m</th>
+                        <th class="border border-gray-300 bg-orange-400 text-white px-3 py-1 text-right font-medium">vEd [kN/m]</th>
+                        <th class="border border-gray-300 bg-orange-400 text-white px-3 py-1 text-right font-medium">vRd [kN/m]</th>
+                        <th class="border border-gray-300 bg-orange-400 text-white px-3 py-1 text-center font-medium">&eta;V</th>
+                        <th class="border border-gray-300 bg-blue-500 text-white px-3 py-1 text-right font-medium">HEd [kN]</th>
+                        <th class="border border-gray-300 bg-blue-500 text-white px-3 py-1 text-right font-medium">HRd [kN]</th>
+                        <th class="border border-gray-300 bg-blue-500 text-white px-3 py-1 text-center font-medium">&eta;H</th>
+                        <th class="border border-gray-300 bg-blue-500 text-white px-3 py-1 text-right font-medium">Stiffness [kNm/rad/m]</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Edit modal -->
+    <div id="edit-modal" class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-72">
+            <div class="font-semibold text-sm mb-4">Edit row</div>
+            <div class="mb-3">
+                <label class="text-gray-600 block mb-1">Position name</label>
+                <input type="text" id="edit-position" class="w-full border border-gray-300 rounded px-2 py-1">
+            </div>
+            <div class="mb-4">
+                <label class="text-gray-600 block mb-1">Quantity [pcs]</label>
+                <input type="number" id="edit-quantity" min="1" class="w-full border border-gray-300 rounded px-2 py-1">
+            </div>
+            <div class="flex gap-2 justify-end">
+                <button onclick="closeEditModal()"
+                        class="border border-gray-300 rounded px-4 py-1 hover:bg-gray-50">Cancel</button>
+                <button onclick="saveEdit()"
+                        class="bg-teal-500 text-white rounded px-4 py-1 hover:bg-teal-600">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden file inputs -->
+    <input type="file" id="csv-file-input" accept=".csv" class="hidden" onchange="handleCSVImport(event)">
+    <input type="file" id="json-file-input" accept=".json" class="hidden" onchange="handleJSONLoad(event)">
+</div>

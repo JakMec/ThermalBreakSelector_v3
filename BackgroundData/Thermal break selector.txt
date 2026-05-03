@@ -1,0 +1,21 @@
+Drop-down menues: 
+
+Type of support: Slab-to-Slab; Slabe-to-Wall, Horizontal el. 
+Default: Slab-to-Slab
+
+Balcony connector height: range 160 - 300 with 10 mm step
+
+Balcony slab concrete grade: C20/25, C25/30, C30/37
+
+Concrete cover: CC35; CC55
+
+Connector length: If type of support = Horizontal el. the 250, Otherwise 1000 and 500
+
+Anchorage length LR: range 145 to 175 with 5 mm step
+
+Quantity is a text area where integer is entered. 
+
+when Type of support = Horizontal el. the Bending moment area and Shear load area are disabled, otherwise Horizontal load area is disabled. 
+
+Extra insulation on the top: drop down menu with range 0-70 with 5mm step
+Extra insulation in the bottom: drop down menu with range 0-70 with 5mm step
