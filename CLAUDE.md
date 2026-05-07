@@ -55,14 +55,11 @@ The page is a full-height flex row with three zones:
    - **File operations**: Open file, Save as, Print PDF, Export CSV, Import CSV
 
 3. **Left sidebar (256 px)** — two stacked bordered sections:
-   - **Global inputs**: Type of support (3 icon buttons: Slab-to-Slab, Slab-to-Wall, Horizontal el.), Bending moment + direction toggles (↺↻), Shear load + direction toggles (↑↓), Horizontal load + direction toggles (←→), Balcony connector height, Balcony slab concrete grade, Thermal insulation thickness toggle (ISO 80 | ISO 120), Thermal break type toggle (EBEA | TEBEA), Concrete cover, Maximum utilization, Select button
-   - **Selected type** — switches panel based on break type:
-     - **TEBEA panel**: Selected type dropdown → Connector length → Anchorage length → Position name → Quantity + Add to list
-     - **EBEA panel**: Connector length → Anchorage length → Extra insulation top → Extra insulation bottom → Without crossbar toggle → Position name → Quantity + Add to list
+   - **Global inputs**: Type of support (3 icon buttons: Slab-to-Slab, Slab-to-Wall, Horizontal el.), Bending moment + direction toggles (↺↻), Shear load + direction toggles (↑↓), Horizontal load (no direction buttons), Balcony connector height, Balcony slab concrete grade, Thermal insulation thickness toggle (ISO 80 | ISO 120), Thermal break type toggle (EBEA | TEBEA), Concrete cover, Maximum utilization, Select button
+   - **Selected type** — single unified panel (no TEBEA/EBEA split): Selected type dropdown → Connector length → Anchorage length → Extra insulation top → Extra insulation bottom → Without crossbar (toggle switch) → Position name → Quantity + Add to list
 
-4. **Right content area** — action buttons + horizontally scrollable results table:
-   - Left buttons: Import CSV, Delete (trash icon)
-   - Right buttons: Save as, Print PDF, Export CSV
+4. **Right content area** — Delete button + horizontally scrollable results table:
+   - Buttons: Delete (trash icon) — Import CSV / Save as / Print PDF / Export CSV are in the File overlay panel only
    - Table columns: ☐ | No. | Position | Connector | Length [mm] | Quantity [pcs] | Edit | mEd [kNm/m] | mRd [kNm/m] | ηm | vEd [kN/m] | vRd [kN/m] | ηV | HEd [kN] | HRd [kN] | ηH | Stiffness [kNm/rad/m]
    - Orange headers: mEd, mRd, ηm, vEd, vRd, ηV
    - Blue headers: HEd, HRd, ηH, Stiffness
@@ -85,7 +82,7 @@ The page is a full-height flex row with three zones:
 | Connector length | 1000, 500 — or 250 only when Type of support = Horizontal el. |
 | Anchorage length | Select (placeholder) + 145–175 mm, step 5 (JS generated) |
 | Extra insulation top / bottom | 0–70 mm, step 5 (JS generated) |
-| Quantity | Integer input (default 1), one per panel |
+| Quantity | Integer input (default 1) |
 
 ## Dynamic field behaviour
 
@@ -93,10 +90,9 @@ The page is a full-height flex row with three zones:
 |---|---|
 | Type of support = Horizontal el. | Bending moment + Shear load disabled and cleared; Horizontal load enabled; connector length options set to 250 only |
 | Type of support = Slab-to-Slab or Slab-to-Wall | Horizontal load disabled and cleared; Bending moment + Shear load enabled; connector length options 1000 / 500 |
-| Thermal break type = EBEA | EBEA panel shown (extra insulation, crossbar); TEBEA panel hidden |
-| Thermal break type = TEBEA | TEBEA panel shown (Selected type dropdown); EBEA panel hidden |
-| Load direction buttons (↺↻, ↑↓, ←→) | Toggle active direction highlight (teal); direction stored in `loadDirs` state |
-| Without crossbar button | Toggles teal/inactive state; stored in `crossbarActive` |
+| Thermal break type = EBEA / TEBEA | Updates `currentBreakType`; reflected in connector name when row is added |
+| Load direction buttons (↺↻, ↑↓) | Toggle active direction highlight (teal) for bending moment and shear load; stored in `loadDirs` |
+| Without crossbar toggle switch | Slides knob right + track turns teal when on; stored in `crossbarActive` |
 
 ## app.js — key functions
 
@@ -105,15 +101,13 @@ The page is a full-height flex row with three zones:
 | `initDropdowns()` | Populates all JS-generated range selects on page load |
 | `setSupport(type)` | Updates active support button, calls `onTypeOfSupportChange()` |
 | `onTypeOfSupportChange()` | Enables/disables load inputs and calls `updateConnectorLengths()` |
-| `updateConnectorLengths(type)` | Rebuilds connector length options for both panels |
+| `updateConnectorLengths(type)` | Rebuilds connector length options (250 for horizontal, 1000/500 otherwise) |
 | `setInputDisabled(id, disabled)` | Toggles disabled state + visual style on an input |
-| `setLoadDir(load, dir)` | Highlights the active direction button for bm / sl / hl |
-| `selectInsulation(type)` / `selectBreakType(type)` | Toggle ISO 80/120 or EBEA/TEBEA; call `updateSelectedPanel()` |
-| `updateSelectedPanel()` | Shows EBEA or TEBEA panel based on `currentBreakType` |
-| `switchTab(tab)` | Alias for `updateSelectedPanel()` |
-| `toggleCrossbar()` | Toggles the "Without crossbar" button state |
+| `setLoadDir(load, dir)` | Highlights the active direction button for bm / sl |
+| `selectInsulation(type)` / `selectBreakType(type)` | Toggle ISO 80/120 or EBEA/TEBEA; update `currentInsulation` / `currentBreakType` |
+| `toggleCrossbar()` | Animates the toggle switch knob and track; flips `crossbarActive` |
 | `selectProduct()` | Placeholder — DB lookup wired here later |
-| `addToList(tab)` | Reads all inputs for the active panel → appends row to `tableRows[]` |
+| `addToList()` | Reads all inputs from the unified Section 2 panel → appends row to `tableRows[]` |
 | `renderTable()` | Re-renders all table rows from `tableRows[]` state |
 | `toggleSelectAll(checked)` | Checks/unchecks all row checkboxes |
 | `openEditModal(id)` / `closeEditModal()` / `saveEdit()` | Edit position + quantity via modal |
@@ -136,10 +130,10 @@ The page is a full-height flex row with three zones:
 | `currentInsulation` | `string` | `'iso80'` or `'iso120'` |
 | `currentBreakType` | `string` | `'ebea'` or `'tebea'` |
 | `crossbarActive` | `boolean` | Whether "Without crossbar" is toggled on |
-| `loadDirs` | `object` | Active direction per load: `{ bm, sl, hl }` |
+| `loadDirs` | `object` | Active direction per load: `{ bm, sl }` |
 
 ## What is NOT yet implemented (to be added later)
 
 - **Product database** — `selectProduct()` is a no-op placeholder; no DB queries yet
-- **Selected type dropdown options** — `#selected-type-tebea` only has a blank "Select" option; values will come from DB
+- **Selected type dropdown options** — `#selected-type` only has a blank "Select" option; values will come from DB
 - **Calculation logic** — mEd, mRd, ηm, vEd, vRd, ηV, HEd, HRd, ηH, Stiffness columns are stored as `null` and display empty

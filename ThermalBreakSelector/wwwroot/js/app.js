@@ -6,7 +6,7 @@ let currentSupport = 'slab-slab';
 let currentInsulation = 'iso80';
 let currentBreakType = 'ebea';
 let crossbarActive = false;
-let loadDirs = { bm: 'ccw', sl: 'down', hl: 'right' };
+let loadDirs = { bm: 'ccw', sl: 'down' };
 
 // ── Init ──────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
@@ -21,8 +21,7 @@ function initDropdowns() {
     populateSelect('connector-height', range(160, 300, 10).map(v => ({ value: v, label: String(v) })));
 
     const anchorageOpts = [{ value: '', label: 'Select' }, ...range(145, 175, 5).map(v => ({ value: v, label: String(v) }))];
-    populateSelect('anchorage-length-tebea', anchorageOpts);
-    populateSelect('anchorage-length-ebea', anchorageOpts);
+    populateSelect('anchorage-length', anchorageOpts);
 
     const insOpts = range(0, 70, 5).map(v => ({ value: v, label: String(v) }));
     populateSelect('extra-ins-top', insOpts);
@@ -94,15 +93,13 @@ function updateConnectorLengths(supportType) {
     const opts = supportType === 'horizontal'
         ? [{ value: 250, label: '250' }]
         : [{ value: 1000, label: '1000' }, { value: 500, label: '500' }];
-    populateSelect('connector-length-tebea', opts);
-    populateSelect('connector-length-ebea', opts);
+    populateSelect('connector-length', opts);
 }
 
 // ── Load direction toggles ─────────────────────────────────────────────────
 const DIR_BTNS = {
     bm: { ccw: 'btn-bm-ccw', cw: 'btn-bm-cw' },
     sl: { up: 'btn-sl-up', down: 'btn-sl-down' },
-    hl: { left: 'btn-hl-left', right: 'btn-hl-right' },
 };
 
 function setLoadDir(load, dir) {
@@ -147,23 +144,15 @@ function setPairToggle(idA, idB, aActive) {
 }
 
 // ── Panel switching ───────────────────────────────────────────────────────
-function updateSelectedPanel() {
-    const showEbea = currentBreakType === 'ebea';
-    document.getElementById('panel-ebea').classList.toggle('hidden', !showEbea);
-    document.getElementById('panel-tebea').classList.toggle('hidden', showEbea);
-}
-
-function switchTab(tab) { updateSelectedPanel(); }
+function updateSelectedPanel() {}
+function switchTab(tab) {}
 
 // ── Crossbar toggle ───────────────────────────────────────────────────────
 function toggleCrossbar() {
     crossbarActive = !crossbarActive;
-    const btn = document.getElementById('crossbar-btn');
-    btn.classList.toggle('border-teal-500', crossbarActive);
-    btn.classList.toggle('bg-teal-500', crossbarActive);
-    btn.classList.toggle('text-white', crossbarActive);
-    btn.classList.toggle('border-gray-400', !crossbarActive);
-    btn.classList.toggle('text-gray-400', !crossbarActive);
+    document.getElementById('crossbar-track').classList.toggle('bg-teal-500', crossbarActive);
+    document.getElementById('crossbar-track').classList.toggle('bg-gray-300', !crossbarActive);
+    document.getElementById('crossbar-knob').classList.toggle('translate-x-5', crossbarActive);
 }
 
 // ── Product selection (placeholder) ──────────────────────────────────────
@@ -172,27 +161,17 @@ function selectProduct() {
 }
 
 // ── Add to list ───────────────────────────────────────────────────────────
-function addToList(tab) {
-    let position, connectorName, length, quantity, extraData = {};
+function addToList() {
+    const position    = document.getElementById('position-name').value.trim();
+    const length      = parseInt(document.getElementById('connector-length').value) || 0;
+    const quantity    = Math.max(1, parseInt(document.getElementById('quantity').value) || 1);
+    const selectedType = document.getElementById('selected-type').value;
+    const anchorage   = document.getElementById('anchorage-length').value;
+    const extraTop    = document.getElementById('extra-ins-top').value;
+    const extraBottom = document.getElementById('extra-ins-bottom').value;
 
-    if (tab === 'tebea') {
-        position = document.getElementById('position-name-tebea').value.trim();
-        length = parseInt(document.getElementById('connector-length-tebea').value) || 0;
-        quantity = Math.max(1, parseInt(document.getElementById('quantity-tebea').value) || 1);
-        const selectedType = document.getElementById('selected-type-tebea').value;
-        const anchorage = document.getElementById('anchorage-length-tebea').value;
-        connectorName = `${currentInsulation.toUpperCase()} TEBEA${selectedType ? ' · ' + selectedType : ''}`;
-        extraData = { anchorageLength: anchorage, selectedType };
-    } else {
-        position = document.getElementById('position-name-ebea').value.trim();
-        length = parseInt(document.getElementById('connector-length-ebea').value) || 0;
-        quantity = Math.max(1, parseInt(document.getElementById('quantity-ebea').value) || 1);
-        const anchorage = document.getElementById('anchorage-length-ebea').value;
-        const extraTop = document.getElementById('extra-ins-top').value;
-        const extraBottom = document.getElementById('extra-ins-bottom').value;
-        connectorName = `${currentInsulation.toUpperCase()} EBEA`;
-        extraData = { anchorageLength: anchorage, extraInsTop: extraTop, extraInsBottom: extraBottom, crossbar: crossbarActive };
-    }
+    const breakLabel  = currentBreakType.toUpperCase();
+    const connectorName = `${currentInsulation.toUpperCase()} ${breakLabel}${selectedType ? ' · ' + selectedType : ''}`;
 
     tableRows.push({
         id: nextId++,
@@ -200,7 +179,6 @@ function addToList(tab) {
         connector: connectorName,
         length,
         quantity,
-        tab,
         insulation: currentInsulation,
         breakType: currentBreakType,
         support: currentSupport,
@@ -211,7 +189,11 @@ function addToList(tab) {
         connectorHeight: document.getElementById('connector-height').value,
         concreteCover: document.getElementById('concrete-cover').value,
         maxUtilization: document.getElementById('max-utilization').value,
-        ...extraData,
+        selectedType,
+        anchorageLength: anchorage,
+        extraInsTop: extraTop,
+        extraInsBottom: extraBottom,
+        crossbar: crossbarActive,
         mEd: null, mRd: null, etaM: null,
         vEd: null, vRd: null, etaV: null,
         hEd: null, hRd: null, etaH: null,

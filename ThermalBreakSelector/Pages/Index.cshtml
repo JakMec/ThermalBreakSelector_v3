@@ -98,30 +98,18 @@
             <div class="flex gap-1 mb-2">
                 <!-- Slab-to-Slab -->
                 <button id="support-slab-slab" onclick="setSupport('slab-slab')" title="Slab-to-Slab"
-                        class="support-btn flex-1 border-2 border-teal-500 bg-teal-500 text-white rounded p-1 flex justify-center items-center">
-                    <svg viewBox="0 0 36 36" class="w-8 h-8" fill="currentColor">
-                        <rect x="1" y="1" width="34" height="7" rx="1"/>
-                        <rect x="15" y="8" width="6" height="20"/>
-                        <rect x="1" y="28" width="34" height="7" rx="1"/>
-                    </svg>
+                        class="support-btn flex-1 border-2 border-teal-500 bg-teal-500 rounded p-1 flex justify-center items-center">
+                    <img src="/img/slab-slab.png" class="w-8 h-8 object-contain" alt="Slab-to-Slab">
                 </button>
                 <!-- Slab-to-Wall -->
                 <button id="support-slab-wall" onclick="setSupport('slab-wall')" title="Slab-to-Wall"
-                        class="support-btn flex-1 border border-gray-300 bg-white text-gray-600 rounded p-1 flex justify-center items-center">
-                    <svg viewBox="0 0 36 36" class="w-8 h-8" fill="currentColor">
-                        <rect x="1" y="1" width="22" height="7" rx="1"/>
-                        <rect x="15" y="8" width="6" height="20"/>
-                        <rect x="27" y="1" width="8" height="34" rx="1"/>
-                    </svg>
+                        class="support-btn flex-1 border border-gray-300 bg-white rounded p-1 flex justify-center items-center">
+                    <img src="/img/slab-wall.png" class="w-8 h-8 object-contain" alt="Slab-to-Wall">
                 </button>
                 <!-- Horizontal el. -->
                 <button id="support-horizontal" onclick="setSupport('horizontal')" title="Horizontal el."
-                        class="support-btn flex-1 border border-gray-300 bg-white text-gray-600 rounded p-1 flex justify-center items-center">
-                    <svg viewBox="0 0 36 36" class="w-8 h-8" fill="currentColor">
-                        <rect x="1" y="1" width="8" height="34" rx="1"/>
-                        <rect x="9" y="15" width="18" height="6"/>
-                        <rect x="27" y="1" width="8" height="34" rx="1"/>
-                    </svg>
+                        class="support-btn flex-1 border border-gray-300 bg-white rounded p-1 flex justify-center items-center">
+                    <img src="/img/horizontal.png" class="w-8 h-8 object-contain" alt="Horizontal el.">
                 </button>
             </div>
 
@@ -149,14 +137,8 @@
 
             <!-- Horizontal load -->
             <div class="text-teal-600 mb-1">Horizontal load [kN]</div>
-            <div class="flex gap-1 mb-2">
-                <input type="number" id="horizontal-load" placeholder="Horizontal load" step="any" disabled
-                       class="flex-1 border border-gray-300 rounded px-2 py-1 min-w-0 bg-gray-100 text-gray-400 cursor-not-allowed">
-                <button id="btn-hl-left" onclick="setLoadDir('hl','left')" title="Left"
-                        class="border border-gray-300 bg-white rounded px-1.5 py-1 text-gray-500 hover:bg-gray-100 leading-none">&#8592;</button>
-                <button id="btn-hl-right" onclick="setLoadDir('hl','right')" title="Right"
-                        class="border border-gray-300 bg-white rounded px-1.5 py-1 text-gray-500 hover:bg-gray-100 leading-none">&#8594;</button>
-            </div>
+            <input type="number" id="horizontal-load" placeholder="Horizontal load" step="any" disabled
+                   class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-gray-100 text-gray-400 cursor-not-allowed">
 
             <!-- Balcony connector height -->
             <div class="text-teal-600 mb-1">Balcony connector height</div>
@@ -212,65 +194,40 @@
         <!-- Section 2: Selected type -->
         <div class="border border-gray-300 m-2 p-2 rounded">
 
-            <!-- TEBEA panel -->
-            <div id="panel-tebea" class="hidden">
-                <div class="text-teal-600 mb-1">Selected type</div>
-                <select id="selected-type-tebea" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white">
-                    <option value="">Select</option>
-                </select>
+            <div class="text-teal-600 font-semibold mb-1">Selected type</div>
+            <select id="selected-type" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white">
+                <option value="">Select</option>
+            </select>
 
-                <div class="text-teal-600 mb-1">Connector length [mm]</div>
-                <select id="connector-length-tebea" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white"></select>
+            <div class="text-teal-600 mb-1">Connector length [mm]</div>
+            <select id="connector-length" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white"></select>
 
-                <div class="text-teal-600 mb-1">Anchorage length [mm]</div>
-                <select id="anchorage-length-tebea" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white"></select>
+            <div class="text-teal-600 mb-1">Anchorage length [mm]</div>
+            <select id="anchorage-length" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white"></select>
 
-                <div class="text-teal-600 mb-1">Position name</div>
-                <input type="text" id="position-name-tebea" placeholder="Position"
-                       class="w-full border border-gray-300 rounded px-2 py-1 mb-2">
+            <div class="text-teal-600 mb-1">Extra insulation on the top [mm]</div>
+            <select id="extra-ins-top" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white"></select>
 
-                <div class="flex gap-2 mt-1">
-                    <input type="number" id="quantity-tebea" value="1" min="1"
-                           class="w-16 border border-gray-300 rounded px-2 py-1 bg-white text-gray-900">
-                    <button onclick="addToList('tebea')"
-                            class="flex-1 bg-teal-500 hover:bg-teal-600 text-white rounded py-1">Add to list</button>
+            <div class="text-teal-600 mb-1">Extra insulation in the bottom [mm]</div>
+            <select id="extra-ins-bottom" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white"></select>
+
+            <div class="flex items-center gap-2 mb-2 cursor-pointer" onclick="toggleCrossbar()">
+                <div class="relative w-10 h-5 shrink-0">
+                    <div id="crossbar-track" class="absolute inset-0 bg-gray-300 rounded-full transition-colors duration-200"></div>
+                    <div id="crossbar-knob" class="absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200"></div>
                 </div>
+                <span class="text-gray-700 select-none">Without crossbar</span>
             </div>
 
-            <!-- EBEA panel -->
-            <div id="panel-ebea">
-                <div class="text-teal-600 mb-1">Connector length [mm]</div>
-                <select id="connector-length-ebea" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white"></select>
+            <div class="text-teal-600 mb-1">Position name</div>
+            <input type="text" id="position-name" placeholder="Position"
+                   class="w-full border border-gray-300 rounded px-2 py-1 mb-2">
 
-                <div class="text-teal-600 mb-1">Anchorage length [mm]</div>
-                <select id="anchorage-length-ebea" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white"></select>
-
-                <div class="text-teal-600 mb-1">Extra insulation on the top [mm]</div>
-                <select id="extra-ins-top" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white"></select>
-
-                <div class="text-teal-600 mb-1">Extra insulation in the bottom [mm]</div>
-                <select id="extra-ins-bottom" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white"></select>
-
-                <div class="flex items-center gap-2 mb-2">
-                    <button onclick="toggleCrossbar()" id="crossbar-btn"
-                            class="w-6 h-6 border-2 border-gray-400 rounded-full flex items-center justify-center text-gray-400 hover:border-gray-600 shrink-0">
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/>
-                        </svg>
-                    </button>
-                    <span class="text-gray-700">Without crossbar</span>
-                </div>
-
-                <div class="text-teal-600 mb-1">Position name</div>
-                <input type="text" id="position-name-ebea" placeholder="Position"
-                       class="w-full border border-gray-300 rounded px-2 py-1 mb-2">
-
-                <div class="flex gap-2 mt-1">
-                    <input type="number" id="quantity-ebea" value="1" min="1"
-                           class="w-16 border border-gray-300 rounded px-2 py-1 bg-white text-gray-900">
-                    <button onclick="addToList('ebea')"
-                            class="flex-1 bg-teal-500 hover:bg-teal-600 text-white rounded py-1">Add to list</button>
-                </div>
+            <div class="flex gap-2 mt-1">
+                <input type="number" id="quantity" value="1" min="1"
+                       class="w-16 border border-gray-300 rounded px-2 py-1 bg-white text-gray-900">
+                <button onclick="addToList()"
+                        class="flex-1 bg-teal-500 hover:bg-teal-600 text-white rounded py-1">Add to list</button>
             </div>
         </div>
     </div>
@@ -279,26 +236,14 @@
     <div class="flex-1 flex flex-col overflow-hidden p-2 min-w-0">
 
         <!-- Action buttons -->
-        <div class="flex justify-between mb-2 shrink-0">
-            <div class="flex gap-2">
-                <button onclick="importCSV()"
-                        class="border border-gray-300 rounded px-3 py-1 hover:bg-gray-50">Import CSV</button>
-                <button onclick="deleteSelected()" title="Delete selected rows"
-                        class="border border-gray-300 rounded px-2 py-1 hover:bg-gray-50 flex items-center text-gray-600">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                    </svg>
-                </button>
-            </div>
-            <div class="flex gap-2">
-                <button onclick="saveAsJSON()"
-                        class="border border-gray-300 rounded px-3 py-1 hover:bg-gray-50">Save as</button>
-                <button onclick="printPDF()"
-                        class="border border-gray-300 rounded px-3 py-1 hover:bg-gray-50">Print PDF</button>
-                <button onclick="exportCSV()"
-                        class="border border-gray-300 rounded px-3 py-1 hover:bg-gray-50">Export CSV</button>
-            </div>
+        <div class="flex mb-2 shrink-0">
+            <button onclick="deleteSelected()" title="Delete selected rows"
+                    class="border border-gray-300 rounded px-2 py-1 hover:bg-gray-50 flex items-center text-gray-600">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+            </button>
         </div>
 
         <!-- Results table -->
