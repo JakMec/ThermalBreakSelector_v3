@@ -51,7 +51,7 @@ The page is a full-height flex row with three zones:
 1. **Narrow nav bar (40 px)** — three icon buttons: Home (closes overlay), Person (project settings), Hamburger (file operations). Clicking Person or Hamburger opens an overlay panel that slides over the sidebar.
 
 2. **Overlay panel (264 px, absolute)** — two sub-panels toggled by the nav:
-   - **Project settings**: Designer section (Company, Address, Phone, Name, Email) + Project section (Company, Location, Contact person, Comments)
+   - **Project settings**: Designer section (Company, Address, Phone, Name, Email) + Project section (Company, Location, Contact person, Comments) — included in PDF printout and CSV export
    - **File operations**: Open file, Save as, Print PDF, Export CSV, Import CSV
 
 3. **Left sidebar (256 px)** — two stacked bordered sections:
@@ -61,8 +61,7 @@ The page is a full-height flex row with three zones:
 4. **Right content area** — Delete button + horizontally scrollable results table:
    - Buttons: Delete (trash icon) — Import CSV / Save as / Print PDF / Export CSV are in the File overlay panel only
    - Table columns: ☐ | No. | Position | Connector | Length [mm] | Quantity [pcs] | Edit | mEd [kNm/m] | mRd [kNm/m] | ηm | vEd [kN/m] | vRd [kN/m] | ηV | HEd [kN] | HRd [kN] | ηH | Stiffness [kNm/rad/m]
-   - Orange headers: mEd, mRd, ηm, vEd, vRd, ηV
-   - Blue headers: HEd, HRd, ηH, Stiffness
+   - All headers: gray (`bg-gray-50`)
 
 ## Button data
 
@@ -137,11 +136,11 @@ The page is a full-height flex row with three zones:
 | `toggleSelectAll(checked)` | Checks/unchecks all row checkboxes |
 | `openEditModal(id)` / `closeEditModal()` / `saveEdit()` | Edit position + quantity via modal |
 | `deleteSelected()` | Removes all checked rows from `tableRows[]` |
-| `exportCSV()` | Downloads table as `.csv` |
+| `exportCSV()` | Prepends project settings block (Designer + Project, two-column, with date) then table headers + rows; downloads as `.csv` |
 | `importCSV()` / `handleCSVImport(event)` | Imports rows from a `.csv` file |
 | `saveAsJSON()` | Saves all inputs + project settings + rows as `.json` |
 | `openFile()` / `handleJSONLoad(event)` | Loads a previously saved `.json` project file |
-| `printPDF()` | Calls `window.print()` — sidebar + controls hidden via print CSS |
+| `printPDF()` | Populates `#print-header` spans from project settings inputs, then calls `window.print()` |
 | `navTo(panel)` | Shows/hides the overlay panel ('main', 'project', or 'file') |
 
 ## app.js — state variables
@@ -211,11 +210,15 @@ ProductFamily === currentBreakType    (TEBEA | EBEA, case-insensitive)
 InsThickness  === 80 | 120            (from currentInsulation)
 ```
 
-### Step 2 — double-moment / double-shear flags (non-horizontal only)
+### Step 2 — derive bending & shear flags (`'slab-slab'` and `'slab-wall'` only — skipped for `'horizontal'`)
 ```
-DoubleMoment  === (loadDirs.bm === 'posNegBm')
-DoubleShear   === (loadDirs.sl === 'posNegSl')
+if loadDirs.bm === 'negBm'     → DoubleBending = false
+if loadDirs.bm === 'posNegBm'  → DoubleBending = true
+
+if loadDirs.sl === 'posSl'     → DoubleShear = false
+if loadDirs.sl === 'posNegSl'  → DoubleShear = true
 ```
+Filter candidates by: `DoubleMoment === DoubleBending` and `DoubleShear === DoubleShear flag`.
 
 ### Step 3 — load capacity + utilization
 All capacity checks use: `utilizationRatio ≤ maxUtilization / 100`
@@ -246,8 +249,29 @@ If no products survive: dropdown shows "no model available".
 - `S11=` included only when Slab-to-Wall
 - `OQ` included only when crossbar toggle is **off**
 
+## Print / Export layout
+
+### PDF (`printPDF()`)
+Before calling `window.print()`, the function populates a hidden `#print-header` div with current project settings values and makes it visible via `@media print` CSS. Layout mirrors `BackgroundData/Printout layout.docx`:
+
+```
+Designer                    Project
+Company:  [value]           Company:       [value]
+Address:  [value]           Location:      [value]
+Phone:    [value]           Contact person:[value]
+Name:     [value]           Comments:      [value]
+Email:    [value]           Date:          [today]
+─────────────────────────────────────────────────
+[results table]
+```
+
+The sidebar, nav, action buttons, and edit modal are hidden by `@media print` in `site.css`.
+
+### CSV (`exportCSV()`)
+Prepends the same two-column project settings block as 6 header rows (4 columns each: label, value, label, value), then a blank separator row, then the standard table headers and data rows.
+
 ## What is NOT yet implemented
 
-Nothing from the core selection flow. Remaining possible enhancements:
+Remaining possible enhancements:
 - Validation / user feedback beyond "no model available" (e.g. highlight which inputs caused no match)
 - Load-bearing calculation for HEd/HRd columns in non-horizontal rows (currently `null`)

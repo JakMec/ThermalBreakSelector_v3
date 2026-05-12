@@ -35,7 +35,7 @@
         <div id="panel-project" class="hidden p-4">
             <div class="font-semibold text-sm mb-3">Project settings</div>
             <div class="border border-gray-300 rounded p-3 mb-3">
-                <div class="text-orange-500 font-semibold mb-2">Designer</div>
+                <div class="text-black font-bold mb-2">Designer</div>
                 <label class="text-gray-600 block mb-1">Company:</label>
                 <input type="text" id="proj-designer-company" placeholder="Placeholder"
                        class="w-full border border-gray-300 rounded px-2 py-1 mb-2">
@@ -53,7 +53,7 @@
                        class="w-full border border-gray-300 rounded px-2 py-1">
             </div>
             <div class="border border-gray-300 rounded p-3">
-                <div class="text-orange-500 font-semibold mb-2">Project</div>
+                <div class="text-black font-bold mb-2">Project</div>
                 <label class="text-gray-600 block mb-1">Company:</label>
                 <input type="text" id="proj-company" placeholder="Placeholder"
                        class="w-full border border-gray-300 rounded px-2 py-1 mb-2">
@@ -78,11 +78,11 @@
                 <button onclick="saveAsJSON()"
                         class="border border-gray-300 rounded px-3 py-2 text-left hover:bg-gray-50">Save as</button>
                 <button onclick="printPDF()"
-                        class="border border-gray-300 rounded px-3 py-2 text-left text-blue-600 hover:bg-gray-50">Print PDF</button>
+                        class="border border-gray-300 rounded px-3 py-2 text-left hover:bg-gray-50">Print PDF</button>
                 <button onclick="exportCSV()"
-                        class="border border-gray-300 rounded px-3 py-2 text-left text-blue-600 hover:bg-gray-50">Export CSV</button>
+                        class="border border-gray-300 rounded px-3 py-2 text-left hover:bg-gray-50">Export CSV</button>
                 <button onclick="importCSV()"
-                        class="border border-gray-300 rounded px-3 py-2 text-left text-blue-600 hover:bg-gray-50">Import CSV</button>
+                        class="border border-gray-300 rounded px-3 py-2 text-left hover:bg-gray-50">Import CSV</button>
             </div>
         </div>
     </div>
@@ -234,6 +234,29 @@
         </div>
     </div>
 
+    <!-- Print header (hidden in screen view, populated + shown by printPDF()) -->
+    <div id="print-header" style="display:none">
+        <div class="print-header-grid">
+            <div>
+                <div class="print-section-title">Designer</div>
+                <div><span class="print-label">Company:</span> <span id="ph-designer-company"></span></div>
+                <div><span class="print-label">Address:</span> <span id="ph-designer-address"></span></div>
+                <div><span class="print-label">Phone:</span> <span id="ph-designer-phone"></span></div>
+                <div><span class="print-label">Name:</span> <span id="ph-designer-name"></span></div>
+                <div><span class="print-label">Email:</span> <span id="ph-designer-email"></span></div>
+            </div>
+            <div>
+                <div class="print-section-title">Project</div>
+                <div><span class="print-label">Company:</span> <span id="ph-proj-company"></span></div>
+                <div><span class="print-label">Location:</span> <span id="ph-proj-location"></span></div>
+                <div><span class="print-label">Contact person:</span> <span id="ph-proj-contact"></span></div>
+                <div><span class="print-label">Comments:</span> <span id="ph-proj-comments"></span></div>
+                <div><span class="print-label">Date:</span> <span id="ph-date"></span></div>
+            </div>
+        </div>
+        <hr class="print-divider">
+    </div>
+
     <!-- Right main content -->
     <div class="flex-1 flex flex-col overflow-hidden p-2 min-w-0">
 
@@ -262,16 +285,16 @@
                         <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">Length [mm]</th>
                         <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">Quantity [pcs]</th>
                         <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-center font-medium">Edit</th>
-                        <th class="border border-gray-300 bg-orange-400 text-white px-3 py-1 text-right font-medium">mEd [kNm/m]</th>
-                        <th class="border border-gray-300 bg-orange-400 text-white px-3 py-1 text-right font-medium">mRd [kNm/m]</th>
-                        <th class="border border-gray-300 bg-orange-400 text-white px-3 py-1 text-center font-medium">&eta;m</th>
-                        <th class="border border-gray-300 bg-orange-400 text-white px-3 py-1 text-right font-medium">vEd [kN/m]</th>
-                        <th class="border border-gray-300 bg-orange-400 text-white px-3 py-1 text-right font-medium">vRd [kN/m]</th>
-                        <th class="border border-gray-300 bg-orange-400 text-white px-3 py-1 text-center font-medium">&eta;V</th>
-                        <th class="border border-gray-300 bg-blue-500 text-white px-3 py-1 text-right font-medium">HEd [kN]</th>
-                        <th class="border border-gray-300 bg-blue-500 text-white px-3 py-1 text-right font-medium">HRd [kN]</th>
-                        <th class="border border-gray-300 bg-blue-500 text-white px-3 py-1 text-center font-medium">&eta;H</th>
-                        <th class="border border-gray-300 bg-blue-500 text-white px-3 py-1 text-right font-medium">Stiffness [kNm/rad/m]</th>
+                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">mEd [kNm/m]</th>
+                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">mRd [kNm/m]</th>
+                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-center font-medium">&eta;m</th>
+                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">vEd [kN/m]</th>
+                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">vRd [kN/m]</th>
+                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-center font-medium">&eta;V</th>
+                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">HEd [kN]</th>
+                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">HRd [kN]</th>
+                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-center font-medium">&eta;H</th>
+                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">Stiffness [kNm/rad/m]</th>
                     </tr>
                 </thead>
                 <tbody id="table-body"></tbody>

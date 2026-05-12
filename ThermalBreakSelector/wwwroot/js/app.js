@@ -143,6 +143,7 @@ function onTypeOfSupportChange() {
     setInputDisabled('bending-moment', isHoriz);
     setInputDisabled('shear-load', isHoriz);
     setInputDisabled('horizontal-load', !isHoriz);
+    setSelectDisabled('concrete-cover', isHoriz);
     if (isHoriz) {
         document.getElementById('bending-moment').value = '';
         document.getElementById('shear-load').value = '';
@@ -193,6 +194,7 @@ const DIR_BTNS = {
 
 function setLoadDir(load, dir) {
     loadDirs[load] = dir;
+    if (load === 'bm' && dir === 'posNegBm') setLoadDir('sl', 'posNegSl');
     Object.entries(DIR_BTNS[load]).forEach(([d, id]) => {
         const el = document.getElementById(id);
         if (!el) return;
@@ -287,11 +289,13 @@ function selectProduct() {
     const anchorageLength = parseInt(document.getElementById('anchorage-length').value) || 0;
 
     // Step 1 — exact-match filter
+    // Horizontal products always have TopCover=0 in the DB — skip that filter for horizontal
+    const isHoriz = currentSupport === 'horizontal';
     let candidates = productDatabase.filter(p =>
         p['Type'] === csvSupport &&
         Number(p['Height']) === height &&
         Number(p['f__ck']) === concreteStrength &&
-        Number(p['TopCover']) === coverVal &&
+        (isHoriz || Number(p['TopCover']) === coverVal) &&
         String(p['ProductFamily']).toUpperCase() === currentBreakType.toUpperCase() &&
         Number(p['InsThickness']) === insThickness
     );
@@ -567,6 +571,19 @@ function deleteSelected() {
 
 // ── Export CSV ────────────────────────────────────────────────────────────
 function exportCSV() {
+    const v = id => document.getElementById(id)?.value?.trim() ?? '';
+    const date = new Date().toLocaleDateString();
+
+    const projectMeta = [
+        ['Designer', '', 'Project', ''],
+        ['Company:', v('proj-designer-company'), 'Company:', v('proj-company')],
+        ['Address:', v('proj-designer-address'), 'Location:', v('proj-location')],
+        ['Phone:',   v('proj-designer-phone'),   'Contact person:', v('proj-contact')],
+        ['Name:',    v('proj-designer-name'),     'Comments:', v('proj-comments')],
+        ['Email:',   v('proj-designer-email'),    'Date:', date],
+        [],
+    ];
+
     const headers = [
         'No.', 'Position', 'Connector', 'Length [mm]', 'Quantity [pcs]',
         'mEd [kNm/m]', 'mRd [kNm/m]', 'ηm',
@@ -579,8 +596,9 @@ function exportCSV() {
         r.vEd ?? '', r.vRd ?? '', r.etaV ?? '',
         r.hEd ?? '', r.hRd ?? '', r.etaH ?? '', r.stiffness ?? '',
     ]);
+
     downloadText(
-        [headers, ...rows].map(r => r.map(csvCell).join(',')).join('\r\n'),
+        [...projectMeta, headers, ...rows].map(r => r.map(csvCell).join(',')).join('\r\n'),
         'thermal-break-selection.csv', 'text/csv;charset=utf-8'
     );
 }
@@ -723,7 +741,24 @@ function handleJSONLoad(event) {
 }
 
 // ── Print ─────────────────────────────────────────────────────────────────
-function printPDF() { window.print(); }
+function printPDF() {
+    const v = id => document.getElementById(id)?.value?.trim() ?? '';
+    const set = (spanId, val) => {
+        const el = document.getElementById(spanId);
+        if (el) el.textContent = val;
+    };
+    set('ph-designer-company', v('proj-designer-company'));
+    set('ph-designer-address', v('proj-designer-address'));
+    set('ph-designer-phone',   v('proj-designer-phone'));
+    set('ph-designer-name',    v('proj-designer-name'));
+    set('ph-designer-email',   v('proj-designer-email'));
+    set('ph-proj-company',     v('proj-company'));
+    set('ph-proj-location',    v('proj-location'));
+    set('ph-proj-contact',     v('proj-contact'));
+    set('ph-proj-comments',    v('proj-comments'));
+    set('ph-date', new Date().toLocaleDateString());
+    window.print();
+}
 
 // ── Navigation ────────────────────────────────────────────────────────────
 function navTo(panel) {

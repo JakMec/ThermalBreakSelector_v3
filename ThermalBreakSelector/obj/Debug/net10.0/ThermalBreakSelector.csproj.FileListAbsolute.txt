@@ -22,7 +22,6 @@ C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.
 C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.0\scopedcss\Pages\Shared\_Layout.cshtml.rz.scp.css
 C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.0\scopedcss\bundle\ThermalBreakSelector.styles.css
 C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.0\scopedcss\projectbundle\ThermalBreakSelector.bundle.scp.css
-C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.0\compressed\4h29jviuub-{0}-82oox97cax-82oox97cax.gz
 C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.0\compressed\pluvb94d6i-{0}-61n19gt1b8-61n19gt1b8.gz
 C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.0\compressed\l9ihufatel-{0}-xtxxf3hu2r-xtxxf3hu2r.gz
 C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.0\compressed\uqkdttpa83-{0}-bqjiyaj88i-bqjiyaj88i.gz
@@ -96,4 +95,5 @@ C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.
 C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.0\ThermalBreakSelector.pdb
 C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.0\ThermalBreakSelector.genruntimeconfig.cache
 C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.0\ref\ThermalBreakSelector.dll
-C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.0\compressed\f1l3fzkyoi-{0}-wg7m0xu0ny-wg7m0xu0ny.gz
+C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.0\compressed\4h29jviuub-{0}-9e3ajq9p3b-9e3ajq9p3b.gz
+C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.0\compressed\f1l3fzkyoi-{0}-e4nnusp5dg-e4nnusp5dg.gz

@@ -18,7 +18,34 @@ input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 input[type=number] { -moz-appearance: textfield; }
 
-/* Print: hide controls, show only the table */
+/* Print header (screen: hidden; print: shown) */
+#print-header { display: none; }
+
+.print-header-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 32px;
+    font-size: 9pt;
+    margin-bottom: 6px;
+}
+
+.print-section-title {
+    font-weight: bold;
+    font-size: 10pt;
+    margin-bottom: 3px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 2px;
+}
+
+.print-label { font-weight: 600; }
+
+.print-divider {
+    border: none;
+    border-top: 1px solid #999;
+    margin: 6px 0 10px;
+}
+
+/* Print: hide controls, show only the header + table */
 @media print {
     nav,
     #left-sidebar,
@@ -36,6 +63,10 @@ input[type=number] { -moz-appearance: textfield; }
     #app {
         display: block !important;
         height: auto !important;
+    }
+
+    #print-header {
+        display: block !important;
     }
 
     #results-table {
