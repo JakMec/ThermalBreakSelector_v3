@@ -6,26 +6,44 @@ let currentSupport = 'slab-slab';
 let currentInsulation = 'iso80';
 let currentBreakType = 'ebea';
 let crossbarActive = false;
-let loadDirs = { bm: 'ccw', sl: 'down' };
+let loadDirs = { bm: 'negBm', sl: 'posSl' };
+let productDatabase = [];
+let selectedProductRow = null;
 
 // ── Init ──────────────────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     initDropdowns();
-    updateConnectorLengths(currentSupport);
-    updateSelectedPanel();
-    onTypeOfSupportChange();
+    setSupport(currentSupport);
+    selectInsulation(currentInsulation);
+    selectBreakType(currentBreakType);
+    setLoadDir('bm', loadDirs.bm);
+    setLoadDir('sl', loadDirs.sl);
     renderTable();
+    await loadDatabase();
 });
 
+async function loadDatabase() {
+    try {
+        const res = await fetch('/api/database');
+        productDatabase = await res.json();
+    } catch (e) {
+        console.error('Failed to load product database:', e);
+    }
+}
+
 function initDropdowns() {
-    populateSelect('connector-height', range(160, 300, 10).map(v => ({ value: v, label: String(v) })));
-
-    const anchorageOpts = [{ value: '', label: 'Select' }, ...range(145, 175, 5).map(v => ({ value: v, label: String(v) }))];
-    populateSelect('anchorage-length', anchorageOpts);
-
     const insOpts = range(0, 70, 5).map(v => ({ value: v, label: String(v) }));
     populateSelect('extra-ins-top', insOpts);
     populateSelect('extra-ins-bottom', insOpts);
+    updateConnectorHeight();
+    updateConcreteCover();
+}
+
+function updateConnectorHeight() {
+    const opts = currentBreakType === 'ebea'
+        ? range(160, 300, 20).map(v => ({ value: v, label: String(v) }))
+        : range(160, 250, 10).map(v => ({ value: v, label: String(v) }));
+    populateSelect('connector-height', opts);
 }
 
 function range(from, to, step) {
@@ -44,6 +62,62 @@ function populateSelect(id, items) {
         opt.textContent = label;
         sel.appendChild(opt);
     });
+}
+
+// ── Concrete cover ────────────────────────────────────────────────────────
+function updateConcreteCover() {
+    let opts;
+    if (currentBreakType === 'tebea') {
+        opts = currentSupport === 'horizontal'
+            ? [{ value: 35, label: '35' }]
+            : [{ value: 35, label: '35' }, { value: 55, label: '55' }];
+    } else {
+        opts = currentSupport === 'slab-slab'
+            ? [{ value: 30, label: '30' }, { value: 45, label: '45' }]
+            : [{ value: 30, label: '30' }];
+    }
+    populateSelect('concrete-cover', opts);
+}
+
+// ── EBEA-only fields ──────────────────────────────────────────────────────
+function updateEbeaOnlyFields() {
+    const ebea = currentBreakType === 'ebea';
+    setSelectDisabled('extra-ins-top', !ebea);
+    setSelectDisabled('extra-ins-bottom', !ebea);
+    const crossbarRow = document.getElementById('crossbar-row');
+    if (crossbarRow) crossbarRow.classList.toggle('opacity-40', !ebea);
+    const crossbarEl = document.getElementById('crossbar-track');
+    if (crossbarEl) crossbarEl.closest('[onclick]')?.toggleAttribute('disabled', !ebea);
+    if (!ebea) {
+        document.getElementById('extra-ins-top').value = 0;
+        document.getElementById('extra-ins-bottom').value = 0;
+        if (crossbarActive) toggleCrossbar();
+    }
+}
+
+function setSelectDisabled(id, disabled) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.disabled = disabled;
+    el.classList.toggle('opacity-40', disabled);
+    el.classList.toggle('cursor-not-allowed', disabled);
+}
+
+// ── Anchorage length ──────────────────────────────────────────────────────
+function updateAnchorageLength() {
+    const slider = document.getElementById('anchorage-length');
+    const valDisplay = document.getElementById('anchorage-length-val');
+    if (!slider) return;
+    const enabled = currentSupport === 'slab-wall';
+    slider.disabled = !enabled;
+    if (enabled) {
+        const min = currentBreakType === 'ebea' ? 120 : 145;
+        slider.min = min;
+        slider.max = 220;
+        slider.step = 5;
+        slider.value = 145;
+        if (valDisplay) valDisplay.textContent = '145';
+    }
 }
 
 // ── Type of support ───────────────────────────────────────────────────────
@@ -75,7 +149,10 @@ function onTypeOfSupportChange() {
     } else {
         document.getElementById('horizontal-load').value = '';
     }
-    updateConnectorLengths(currentSupport);
+    updateConcreteCover();
+    updateAnchorageLength();
+    updateConnectorLengths();
+    clearSelection();
 }
 
 function setInputDisabled(id, disabled) {
@@ -89,17 +166,29 @@ function setInputDisabled(id, disabled) {
     el.classList.toggle('text-gray-900', !disabled);
 }
 
-function updateConnectorLengths(supportType) {
-    const opts = supportType === 'horizontal'
-        ? [{ value: 250, label: '250' }]
-        : [{ value: 1000, label: '1000' }, { value: 500, label: '500' }];
+function updateConnectorLengths(productRow) {
+    const sel = document.getElementById('connector-length');
+    if (!sel) return;
+    if (!productRow) {
+        sel.innerHTML = '<option value="">—</option>';
+        return;
+    }
+    const minLen = Number(productRow['minLength']) || 0;
+    const maxLen = Number(productRow['ProductLength']) || 0;
+    const step = currentBreakType === 'tebea' ? 500 : 50;
+    const opts = [];
+    for (let v = minLen; v <= maxLen; v += step) {
+        opts.push({ value: v, label: String(v) });
+    }
+    if (!opts.length) opts.push({ value: maxLen, label: String(maxLen) });
     populateSelect('connector-length', opts);
+    sel.value = maxLen;
 }
 
 // ── Load direction toggles ─────────────────────────────────────────────────
 const DIR_BTNS = {
-    bm: { ccw: 'btn-bm-ccw', cw: 'btn-bm-cw' },
-    sl: { up: 'btn-sl-up', down: 'btn-sl-down' },
+    bm: { negBm: 'btn-bm-negBm', posNegBm: 'btn-bm-posNegBm' },
+    sl: { posSl: 'btn-sl-posSl', posNegSl: 'btn-sl-posNegSl' },
 };
 
 function setLoadDir(load, dir) {
@@ -121,13 +210,25 @@ function setLoadDir(load, dir) {
 function selectInsulation(type) {
     currentInsulation = type;
     setPairToggle('btn-iso80', 'btn-iso120', type === 'iso80');
-    updateSelectedPanel();
+    const tebeaBtn = document.getElementById('btn-tebea');
+    if (tebeaBtn) {
+        const disable = type === 'iso80';
+        tebeaBtn.disabled = disable;
+        tebeaBtn.classList.toggle('opacity-40', disable);
+        tebeaBtn.classList.toggle('cursor-not-allowed', disable);
+    }
+    if (type === 'iso80' && currentBreakType === 'tebea') selectBreakType('ebea');
+    clearSelection();
 }
 
 function selectBreakType(type) {
     currentBreakType = type;
     setPairToggle('btn-ebea', 'btn-tebea', type === 'ebea');
-    updateSelectedPanel();
+    updateConnectorHeight();
+    updateConcreteCover();
+    updateAnchorageLength();
+    updateEbeaOnlyFields();
+    clearSelection();
 }
 
 function setPairToggle(idA, idB, aActive) {
@@ -143,21 +244,158 @@ function setPairToggle(idA, idB, aActive) {
     });
 }
 
-// ── Panel switching ───────────────────────────────────────────────────────
-function updateSelectedPanel() {}
-function switchTab(tab) {}
+function clearSelection() {
+    selectedProductRow = null;
+    const sel = document.getElementById('selected-type');
+    if (sel) { sel.innerHTML = '<option value="">Select</option>'; }
+    updateConnectorLengths(null);
+}
 
 // ── Crossbar toggle ───────────────────────────────────────────────────────
 function toggleCrossbar() {
+    if (currentBreakType !== 'ebea') return;
     crossbarActive = !crossbarActive;
     document.getElementById('crossbar-track').classList.toggle('bg-teal-500', crossbarActive);
     document.getElementById('crossbar-track').classList.toggle('bg-gray-300', !crossbarActive);
     document.getElementById('crossbar-knob').classList.toggle('translate-x-5', crossbarActive);
 }
 
-// ── Product selection (placeholder) ──────────────────────────────────────
+// ── Product selection ─────────────────────────────────────────────────────
 function selectProduct() {
-    // Placeholder — product database lookup to be implemented
+    if (!productDatabase.length) {
+        alert('Database not yet loaded, please try again.');
+        return;
+    }
+
+    const height = parseInt(document.getElementById('connector-height').value);
+    const coverVal = parseInt(document.getElementById('concrete-cover').value);
+    const concreteClass = document.getElementById('concrete-grade').value;
+    const concreteStrength = concreteClass === 'C20/25' ? 20 : concreteClass === 'C25/30' ? 25 : 30;
+    const insThickness = currentInsulation === 'iso80' ? 80 : 120;
+
+    const csvSupport = currentSupport === 'slab-slab' ? 'Slab-to-Slab'
+        : currentSupport === 'slab-wall' ? 'Slab-to-Wall'
+        : 'Horizontal El.';
+
+    const doubleMoment = loadDirs.bm === 'posNegBm';
+    const doubleShear = loadDirs.sl === 'posNegSl';
+
+    const bendingMoment = parseFloat(document.getElementById('bending-moment').value) || 0;
+    const shearLoad = parseFloat(document.getElementById('shear-load').value) || 0;
+    const horizontalLoad = parseFloat(document.getElementById('horizontal-load').value) || 0;
+    const maxUtil = parseFloat(document.getElementById('max-utilization').value) / 100;
+    const anchorageLength = parseInt(document.getElementById('anchorage-length').value) || 0;
+
+    // Step 1 — exact-match filter
+    let candidates = productDatabase.filter(p =>
+        p['Type'] === csvSupport &&
+        Number(p['Height']) === height &&
+        Number(p['f__ck']) === concreteStrength &&
+        Number(p['TopCover']) === coverVal &&
+        String(p['ProductFamily']).toUpperCase() === currentBreakType.toUpperCase() &&
+        Number(p['InsThickness']) === insThickness
+    );
+
+    // Step 2 — DoubleMoment / DoubleShear flags (only for non-horizontal)
+    if (currentSupport !== 'horizontal') {
+        candidates = candidates.filter(p =>
+            Boolean(p['DoubleMoment']) === doubleMoment &&
+            Boolean(p['DoubleShear']) === doubleShear
+        );
+    }
+
+    // Step 3 — load-capacity filter
+    candidates = candidates.filter(p => {
+        const util = calcUtilization(p, bendingMoment, shearLoad, horizontalLoad);
+        if (util === null || util > maxUtil) return false;
+
+        if (currentSupport === 'horizontal') {
+            const hRd = numOrNull(p['HRd']);
+            return hRd !== null && hRd / 1000 >= horizontalLoad;
+        }
+
+        const mRdNeg = numOrNull(p['MRdNeg']);
+        const mRdPos = numOrNull(p['MRdPos']);
+        const vRdPos = numOrNull(p['VRdPos']);
+        const vRdNeg = numOrNull(p['VRdNeg']);
+        const vRdMax = numOrNull(p['VRdMax']);
+
+        if (mRdNeg === null || mRdPos === null || vRdPos === null || vRdNeg === null || vRdMax === null)
+            return false;
+
+        const basicCheck =
+            mRdNeg / 1e6 <= bendingMoment &&
+            mRdPos / 1e6 >= bendingMoment &&
+            vRdPos / 1000 >= shearLoad &&
+            vRdNeg / 1000 <= shearLoad &&
+            vRdMax / 1000 >= shearLoad;
+
+        if (!basicCheck) return false;
+
+        if (currentSupport === 'slab-wall' && currentBreakType === 'ebea') {
+            const dbAncho = numOrNull(p['AnchoLength']);
+            if (dbAncho === null) return false;
+            return anchorageLength >= dbAncho;
+        }
+
+        return true;
+    });
+
+    const sel = document.getElementById('selected-type');
+    if (!candidates.length) {
+        sel.innerHTML = '<option value="">no model available</option>';
+        selectedProductRow = null;
+        updateConnectorLengths(null);
+        return;
+    }
+
+    sel.innerHTML = '';
+    candidates.forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p['ProductType'];
+        opt.textContent = p['ProductType'];
+        opt.dataset.rowIdx = productDatabase.indexOf(p);
+        sel.appendChild(opt);
+    });
+
+    onSelectedTypeChange();
+}
+
+function calcUtilization(p, bm, sl, hl) {
+    if (currentSupport === 'horizontal') {
+        const hRd = numOrNull(p['HRd']);
+        if (!hRd) return null;
+        return hl / (hRd / 1000);
+    }
+    const mRdNeg = numOrNull(p['MRdNeg']);
+    const mRdPos = numOrNull(p['MRdPos']);
+    const vRdPos = numOrNull(p['VRdPos']);
+    const vRdNeg = numOrNull(p['VRdNeg']);
+    if (mRdNeg === null || mRdPos === null || vRdPos === null || vRdNeg === null) return null;
+    const ratios = [];
+    if (mRdNeg !== 0) ratios.push(bm / (mRdNeg / 1e6));
+    if (mRdPos !== 0) ratios.push(bm / (mRdPos / 1e6));
+    if (vRdPos !== 0) ratios.push(sl / (vRdPos / 1000));
+    if (vRdNeg !== 0) ratios.push(sl / (vRdNeg / 1000));
+    return ratios.length ? Math.max(...ratios) : 0;
+}
+
+function numOrNull(v) {
+    const n = parseFloat(v);
+    return isNaN(n) ? null : n;
+}
+
+function onSelectedTypeChange() {
+    const sel = document.getElementById('selected-type');
+    if (!sel) return;
+    const opt = sel.options[sel.selectedIndex];
+    if (!opt || opt.dataset.rowIdx === undefined) {
+        selectedProductRow = null;
+        updateConnectorLengths(null);
+        return;
+    }
+    selectedProductRow = productDatabase[parseInt(opt.dataset.rowIdx)];
+    updateConnectorLengths(selectedProductRow);
 }
 
 // ── Add to list ───────────────────────────────────────────────────────────
@@ -166,40 +404,83 @@ function addToList() {
     const length      = parseInt(document.getElementById('connector-length').value) || 0;
     const quantity    = Math.max(1, parseInt(document.getElementById('quantity').value) || 1);
     const selectedType = document.getElementById('selected-type').value;
-    const anchorage   = document.getElementById('anchorage-length').value;
-    const extraTop    = document.getElementById('extra-ins-top').value;
-    const extraBottom = document.getElementById('extra-ins-bottom').value;
 
-    const breakLabel  = currentBreakType.toUpperCase();
-    const connectorName = `${currentInsulation.toUpperCase()} ${breakLabel}${selectedType ? ' · ' + selectedType : ''}`;
+    if (!selectedType || selectedType === 'Select' || selectedType === 'no model available') return;
+
+    const anchorage    = parseInt(document.getElementById('anchorage-length').value) || 0;
+    const extraTop     = parseInt(document.getElementById('extra-ins-top').value) || 0;
+    const extraBottom  = parseInt(document.getElementById('extra-ins-bottom').value) || 0;
+    const height       = parseInt(document.getElementById('connector-height').value) || 0;
+
+    const connector = buildProductCode(selectedType, length, anchorage, extraTop, extraBottom, height);
+
+    const p = selectedProductRow;
+    const bm = parseFloat(document.getElementById('bending-moment').value) || 0;
+    const sl = parseFloat(document.getElementById('shear-load').value) || 0;
+    const hl = parseFloat(document.getElementById('horizontal-load').value) || 0;
+
+    const mRdNeg = p ? numOrNull(p['MRdNeg']) : null;
+    const mRdPos = p ? numOrNull(p['MRdPos']) : null;
+    const vRdPos = p ? numOrNull(p['VRdPos']) : null;
+    const vRdNeg = p ? numOrNull(p['VRdNeg']) : null;
+    const hRd    = p ? numOrNull(p['HRd'])    : null;
+    const stiff  = p ? numOrNull(p['SpringStiff']) : null;
+
+    const mRdDisplay = loadDirs.bm === 'negBm'
+        ? (mRdNeg !== null ? round2(mRdNeg / 1e6) : null)
+        : (mRdPos !== null && mRdNeg !== null ? round2(Math.min(Math.abs(mRdNeg / 1e6), mRdPos / 1e6)) : null);
+
+    const vRdDisplay = loadDirs.sl === 'posSl'
+        ? (vRdPos !== null ? round2(vRdPos / 1000) : null)
+        : (vRdPos !== null && vRdNeg !== null ? round2(Math.min(vRdPos / 1000, Math.abs(vRdNeg / 1000))) : null);
+
+    const hRdDisplay = hRd !== null ? round2(hRd / 1000) : null;
+    const stiffDisplay = stiff !== null ? round2(stiff / 1e6) : null;
+
+    const etaM = mRdDisplay && mRdDisplay !== 0 ? round2(bm / mRdDisplay) : null;
+    const etaV = vRdDisplay && vRdDisplay !== 0 ? round2(sl / vRdDisplay) : null;
+    const etaH = hRdDisplay && hRdDisplay !== 0 ? round2(hl / hRdDisplay) : null;
 
     tableRows.push({
         id: nextId++,
         position: position || '—',
-        connector: connectorName,
+        connector,
         length,
         quantity,
-        insulation: currentInsulation,
-        breakType: currentBreakType,
-        support: currentSupport,
-        bendingMoment: document.getElementById('bending-moment').value,
-        shearLoad: document.getElementById('shear-load').value,
-        horizontalLoad: document.getElementById('horizontal-load').value,
-        concreteGrade: document.getElementById('concrete-grade').value,
-        connectorHeight: document.getElementById('connector-height').value,
-        concreteCover: document.getElementById('concrete-cover').value,
-        maxUtilization: document.getElementById('max-utilization').value,
-        selectedType,
-        anchorageLength: anchorage,
-        extraInsTop: extraTop,
-        extraInsBottom: extraBottom,
-        crossbar: crossbarActive,
-        mEd: null, mRd: null, etaM: null,
-        vEd: null, vRd: null, etaV: null,
-        hEd: null, hRd: null, etaH: null,
-        stiffness: null,
+        mEd: currentSupport !== 'horizontal' ? round2(bm) : null,
+        mRd: currentSupport !== 'horizontal' ? mRdDisplay : null,
+        etaM: currentSupport !== 'horizontal' ? etaM : null,
+        vEd: currentSupport !== 'horizontal' ? round2(sl) : null,
+        vRd: currentSupport !== 'horizontal' ? vRdDisplay : null,
+        etaV: currentSupport !== 'horizontal' ? etaV : null,
+        hEd: currentSupport === 'horizontal' ? round2(hl) : null,
+        hRd: currentSupport === 'horizontal' ? hRdDisplay : null,
+        etaH: currentSupport === 'horizontal' ? etaH : null,
+        stiffness: stiffDisplay,
     });
     renderTable();
+}
+
+function buildProductCode(selectedType, length, anchorage, extraTop, extraBottom, height) {
+    if (currentBreakType === 'tebea') {
+        let code = `${selectedType}-L${length}`;
+        if (currentSupport === 'slab-wall') code += `-LR${anchorage}`;
+        return code;
+    }
+    const totalHeight = height + extraTop + extraBottom;
+    let code = `${selectedType} Dt${totalHeight}`;
+    if (extraTop > 0) code += ` +IO${extraTop}`;
+    if (extraBottom > 0) code += ` +IU${extraBottom}`;
+    code += ` SW${currentInsulation === 'iso80' ? 80 : 120}`;
+    code += ` L${length}`;
+    if (currentSupport === 'slab-wall') code += ` S11=${anchorage}`;
+    code += ' REI120';
+    if (!crossbarActive) code += ' OQ';
+    return code;
+}
+
+function round2(v) {
+    return Math.round(v * 100) / 100;
 }
 
 // ── Table rendering ───────────────────────────────────────────────────────
@@ -364,7 +645,7 @@ function saveAsJSON() {
             typeOfSupport: currentSupport,
             bendingMoment: v('bending-moment'), bmDir: loadDirs.bm,
             shearLoad: v('shear-load'), slDir: loadDirs.sl,
-            horizontalLoad: v('horizontal-load'), hlDir: loadDirs.hl,
+            horizontalLoad: v('horizontal-load'),
             connectorHeight: v('connector-height'),
             concreteGrade: v('concrete-grade'),
             thermalInsulation: currentInsulation,
@@ -410,7 +691,6 @@ function handleJSONLoad(event) {
             setV('horizontal-load', g.horizontalLoad);
             if (g.bmDir) setLoadDir('bm', g.bmDir);
             if (g.slDir) setLoadDir('sl', g.slDir);
-            if (g.hlDir) setLoadDir('hl', g.hlDir);
             setV('connector-height', g.connectorHeight);
             setV('concrete-grade', g.concreteGrade);
             if (g.thermalInsulation) selectInsulation(g.thermalInsulation);

@@ -40,7 +40,7 @@ ThermalBreakSelector/
 │       └── app.js                # All front-end logic
 ├── Properties/
 │   └── launchSettings.json       # HTTP: 5100, HTTPS: 7181
-├── Program.cs
+├── Program.cs                    # Minimal API + Razor Pages setup; hosts /api/database endpoint
 └── appsettings.json
 ```
 
@@ -55,8 +55,8 @@ The page is a full-height flex row with three zones:
    - **File operations**: Open file, Save as, Print PDF, Export CSV, Import CSV
 
 3. **Left sidebar (256 px)** — two stacked bordered sections:
-   - **Global inputs**: Type of support (3 icon buttons: Slab-to-Slab, Slab-to-Wall, Horizontal el.), Bending moment + direction toggles (↺↻), Shear load + direction toggles (↑↓), Horizontal load (no direction buttons), Balcony connector height, Balcony slab concrete grade, Thermal insulation thickness toggle (ISO 80 | ISO 120), Thermal break type toggle (EBEA | TEBEA), Concrete cover, Maximum utilization, Select button
-   - **Selected type** — single unified panel (no TEBEA/EBEA split): Selected type dropdown → Connector length → Anchorage length → Extra insulation top → Extra insulation bottom → Without crossbar (toggle switch) → Position name → Quantity + Add to list
+   - **Global inputs**: Type of support (3 icon buttons: Slab-to-Slab, Slab-to-Wall, Horizontal el.), Bending moment + direction toggles (− | ±), Shear load + direction toggles (+ | ±), Horizontal load (no direction buttons), Balcony connector height, Balcony slab concrete grade, Thermal insulation thickness toggle (ISO 80 | ISO 120), Thermal break type toggle (EBEA | TEBEA), Concrete cover (dynamic options), Maximum utilization, Select button
+   - **Selected type** — single unified panel (no TEBEA/EBEA split): Selected type dropdown → Connector length → Anchorage length (range slider) → Extra insulation top → Extra insulation bottom → Without crossbar (toggle switch) → Position name → Quantity + Add to list
 
 4. **Right content area** — Delete button + horizontally scrollable results table:
    - Buttons: Delete (trash icon) — Import CSV / Save as / Print PDF / Export CSV are in the File overlay panel only
@@ -70,44 +70,69 @@ The page is a full-height flex row with three zones:
 |---|---|
 | Type of support | Slab-to-Slab (default, active on load), Slab-to-Wall, Horizontal el. |
 | Thermal insulation thickness | ISO 80 (default active), ISO 120 |
-| Thermal break type | EBEA (default active), TEBEA |
+| Thermal break type | EBEA (default active), TEBEA — **TEBEA disabled when ISO 80 is selected** |
 
-## Dropdown data (implemented)
+## Dropdown / input data
 
 | Control | Values |
 |---|---|
-| Balcony connector height | 160–300 mm, step 10 (JS generated) |
+| Balcony connector height | EBEA: 160–300 mm step 20; TEBEA: 160–250 mm step 10 (JS generated, rebuilt on break type change) |
 | Balcony slab concrete grade | C20/25, C25/30 (default), C30/37 |
-| Concrete cover | CC35 (default), CC55 |
-| Connector length | 1000, 500 — or 250 only when Type of support = Horizontal el. |
-| Anchorage length | Select (placeholder) + 145–175 mm, step 5 (JS generated) |
-| Extra insulation top / bottom | 0–70 mm, step 5 (JS generated) |
+| Concrete cover | Dynamic — see table below |
+| Connector length | Built from `minLength`..`ProductLength` after product selection; step 500 (TEBEA) / 50 (EBEA); default = `ProductLength` |
+| Anchorage length | Range slider; enabled only when Slab-to-Wall; TEBEA: 145–220, EBEA: 120–220, step 5, default 145 |
+| Extra insulation top / bottom | 0–70 mm, step 5; **disabled/hidden for TEBEA** |
+| Without crossbar | **Disabled for TEBEA** |
 | Quantity | Integer input (default 1) |
+
+### Concrete cover options (dynamic)
+
+| Break type | Support | Options |
+|---|---|---|
+| TEBEA | Slab-to-Slab or Slab-to-Wall | 35, 55 |
+| TEBEA | Horizontal | 35 |
+| EBEA | Slab-to-Slab | 30, 45 |
+| EBEA | Slab-to-Wall or Horizontal | 30 |
 
 ## Dynamic field behaviour
 
 | Trigger | Effect |
 |---|---|
-| Type of support = Horizontal el. | Bending moment + Shear load disabled and cleared; Horizontal load enabled; connector length options set to 250 only |
-| Type of support = Slab-to-Slab or Slab-to-Wall | Horizontal load disabled and cleared; Bending moment + Shear load enabled; connector length options 1000 / 500 |
-| Thermal break type = EBEA / TEBEA | Updates `currentBreakType`; reflected in connector name when row is added |
-| Load direction buttons (↺↻, ↑↓) | Toggle active direction highlight (teal) for bending moment and shear load; stored in `loadDirs` |
-| Without crossbar toggle switch | Slides knob right + track turns teal when on; stored in `crossbarActive` |
+| Type of support = Horizontal el. | Bending moment + Shear load disabled and cleared; Horizontal load enabled; `updateConcreteCover()` + `updateAnchorageLength()` called |
+| Type of support = Slab-to-Wall | Anchorage length slider enabled; `updateConcreteCover()` called |
+| Thermal insulation = ISO 80 | TEBEA button disabled + dimmed; if TEBEA was active, auto-switches to EBEA |
+| Thermal insulation = ISO 120 | TEBEA button re-enabled |
+| Thermal break type = TEBEA | Connector height rebuilt (160–250 step 10); concrete cover rebuilt; anchorage range updated; extra insulation + crossbar disabled |
+| Thermal break type = EBEA | Connector height rebuilt (160–300 step 20); concrete cover rebuilt; anchorage range updated; extra insulation + crossbar enabled |
+| Load direction buttons (− / ± for bm; + / ± for sl) | Toggle active direction highlight (teal); stored in `loadDirs`; used during selection |
+| Without crossbar toggle switch | EBEA only — slides knob right + track turns teal when on; stored in `crossbarActive` |
+| Select button | Runs full 3-step filter against `productDatabase`; populates `#selected-type` or shows "no model available" |
+| Selected type dropdown change | Calls `updateConnectorLengths(productRow)` — rebuilds length options from DB row |
 
 ## app.js — key functions
 
 | Function | Description |
 |---|---|
-| `initDropdowns()` | Populates all JS-generated range selects on page load |
+| `initDropdowns()` | Populates extra-ins selects; calls `updateConnectorHeight()` + `updateConcreteCover()` |
+| `updateConnectorHeight()` | Rebuilds `#connector-height` options based on `currentBreakType` (EBEA: 160–300 step 20; TEBEA: 160–250 step 10) |
+| `loadDatabase()` | `fetch('/api/database')` on page load; stores result in `productDatabase` |
+| `updateConcreteCover()` | Rebuilds `#concrete-cover` options based on `currentBreakType` + `currentSupport` |
+| `updateAnchorageLength()` | Enables/disables anchorage slider; sets min/max per break type |
+| `updateEbeaOnlyFields()` | Enables/disables extra insulation + crossbar based on `currentBreakType` |
 | `setSupport(type)` | Updates active support button, calls `onTypeOfSupportChange()` |
-| `onTypeOfSupportChange()` | Enables/disables load inputs and calls `updateConnectorLengths()` |
-| `updateConnectorLengths(type)` | Rebuilds connector length options (250 for horizontal, 1000/500 otherwise) |
+| `onTypeOfSupportChange()` | Enables/disables load inputs; calls cover, anchorage, connector-length updaters; clears selection |
+| `updateConnectorLengths(productRow)` | Rebuilds connector length options from DB row (`minLength`..`ProductLength`, step 500/50) |
 | `setInputDisabled(id, disabled)` | Toggles disabled state + visual style on an input |
 | `setLoadDir(load, dir)` | Highlights the active direction button for bm / sl |
-| `selectInsulation(type)` / `selectBreakType(type)` | Toggle ISO 80/120 or EBEA/TEBEA; update `currentInsulation` / `currentBreakType` |
-| `toggleCrossbar()` | Animates the toggle switch knob and track; flips `crossbarActive` |
-| `selectProduct()` | Placeholder — DB lookup wired here later |
-| `addToList()` | Reads all inputs from the unified Section 2 panel → appends row to `tableRows[]` |
+| `selectInsulation(type)` | Toggle ISO 80/120; disables/re-enables TEBEA button; if ISO 80 + TEBEA active → force-switches to EBEA |
+| `selectBreakType(type)` | Toggle EBEA/TEBEA; calls `updateConnectorHeight()`, `updateConcreteCover()`, `updateAnchorageLength()`, `updateEbeaOnlyFields()` |
+| `toggleCrossbar()` | EBEA only — animates the toggle switch knob and track; flips `crossbarActive` |
+| `selectProduct()` | **Implemented** — 3-step filter: (1) exact match, (2) DoubleMoment/DoubleShear flags, (3) load capacity + utilization ratio ≤ maxUtil |
+| `onSelectedTypeChange()` | Reads selected option's `data-row-idx`; updates `selectedProductRow`; calls `updateConnectorLengths()` |
+| `calcUtilization(p, bm, sl, hl)` | Returns max utilization ratio for the product row given the applied loads |
+| `buildProductCode(...)` | Builds EBEA or TEBEA product code string for the results table `Connector` column |
+| `addToList()` | Reads Section 2 inputs → builds product code → fills capacity columns from DB → appends row |
+| `clearSelection()` | Resets `#selected-type` to "Select" and clears connector length options |
 | `renderTable()` | Re-renders all table rows from `tableRows[]` state |
 | `toggleSelectAll(checked)` | Checks/unchecks all row checkboxes |
 | `openEditModal(id)` / `closeEditModal()` / `saveEdit()` | Edit position + quantity via modal |
@@ -129,11 +154,100 @@ The page is a full-height flex row with three zones:
 | `currentSupport` | `string` | `'slab-slab'`, `'slab-wall'`, or `'horizontal'` |
 | `currentInsulation` | `string` | `'iso80'` or `'iso120'` |
 | `currentBreakType` | `string` | `'ebea'` or `'tebea'` |
-| `crossbarActive` | `boolean` | Whether "Without crossbar" is toggled on |
-| `loadDirs` | `object` | Active direction per load: `{ bm, sl }` |
+| `crossbarActive` | `boolean` | Whether "Without crossbar" is toggled on (EBEA only) |
+| `loadDirs` | `object` | Active direction per load: `{ bm: 'negBm'\|'posNegBm', sl: 'posSl'\|'posNegSl' }` |
+| `productDatabase` | `Array` | Full database loaded from `/api/database` on page load |
+| `selectedProductRow` | `object\|null` | The DB row object for the currently selected product |
 
-## What is NOT yet implemented (to be added later)
+## Product database
 
-- **Product database** — `selectProduct()` is a no-op placeholder; no DB queries yet
-- **Selected type dropdown options** — `#selected-type` only has a blank "Select" option; values will come from DB
-- **Calculation logic** — mEd, mRd, ηm, vEd, vRd, ηV, HEd, HRd, ηH, Stiffness columns are stored as `null` and display empty
+Source file: `BackgroundData/2026_05_11 ConnectorDatabase.csv` (~11 770 rows, semicolon-delimited).  
+Served at runtime via `GET /api/database` (defined in `Program.cs` as a minimal API endpoint). Parsed server-side into a JSON array; numeric and boolean fields are typed, not strings.
+
+### Filter columns (map to UI inputs)
+
+| CSV column | Values | UI control |
+|---|---|---|
+| `ProductFamily` (col 21) | `TEBEA` / `EBEA` | Thermal break type toggle |
+| `InsThickness` (col 20) | `80` / `120` | ISO 80 / ISO 120 toggle |
+| `Type` (col 26) | `Slab-to-Slab` / `Slab-to-Wall` / `Horizontal El.` | Type of support buttons |
+| `TopCover` (col 7) | `35` / `55` (TEBEA), `30` / `45` (EBEA) | Concrete cover dropdown |
+| `f__ck` (col 9) | `20` / `25` / `30` | Concrete grade dropdown |
+| `Height` (col 6) | `160`–`300` step 10 | Balcony connector height dropdown |
+| `DoubleMoment` (col 24) | `TRUE`/`FALSE` | bm load direction toggle (`posNegBm` → `TRUE`) |
+| `DoubleShear` (col 25) | `TRUE`/`FALSE` | sl load direction toggle (`posNegSl` → `TRUE`) |
+
+### Capacity output columns (map to results table)
+
+| CSV column | Unit in DB | Table column |
+|---|---|---|
+| `MRdPos` / `MRdNeg` (col 10/11) | N·mm/m | mRd [kNm/m] — divide by 1 000 000 |
+| `VRdPos` / `VRdNeg` (col 12/13) | N/m | vRd [kN/m] — divide by 1 000 |
+| `VRdMax` (col 14) | N/m | max shear check — divide by 1 000 |
+| `HRd` (col 16) | N | HRd [kN] — divide by 1 000 |
+| `SpringStiff` (col 18) | N·mm/rad/m | Stiffness [kNm/rad/m] — divide by 1 000 000 |
+
+### Other notable columns
+
+| CSV column | Description |
+|---|---|
+| `ProductType` (col 1) | Full product name used as dropdown label and in product code |
+| `LoadFamily` / `LoadLevel` (col 2/3) | Connector size family, e.g. CM1–CM4, HM1, E, LM |
+| `ShearFamily` / `ShearLevel` (col 4/5) | Shear variant, e.g. V / VV / W |
+| `AnchoLength` (col 22) | DB anchorage length (S11); EBEA slab-wall filter: selectedAnchorageLength ≥ AnchoLength |
+| `minLength` (col 23) | Minimum connector length for the product; used to build connector-length dropdown |
+| `ProductLength` (col 8) | Maximum/default connector length; used to build connector-length dropdown |
+| `LambdaEq` (col 19) | Equivalent lambda (thermal performance) |
+
+## Selection procedure (triggered by "Select" button)
+
+### Step 1 — exact-match filter
+```
+Type          === csvSupport          ('Slab-to-Slab' | 'Slab-to-Wall' | 'Horizontal El.')
+Height        === connectorHeight     (from UI)
+f__ck         === concreteStrength    (20 | 25 | 30 derived from grade dropdown)
+TopCover      === concreteCover       (numeric value from cover dropdown)
+ProductFamily === currentBreakType    (TEBEA | EBEA, case-insensitive)
+InsThickness  === 80 | 120            (from currentInsulation)
+```
+
+### Step 2 — double-moment / double-shear flags (non-horizontal only)
+```
+DoubleMoment  === (loadDirs.bm === 'posNegBm')
+DoubleShear   === (loadDirs.sl === 'posNegSl')
+```
+
+### Step 3 — load capacity + utilization
+All capacity checks use: `utilizationRatio ≤ maxUtilization / 100`
+
+- **Slab-to-Slab / Slab-to-Wall (TEBEA and EBEA)**:
+  `MRdNeg/1e6 ≤ bm`, `MRdPos/1e6 ≥ bm`, `VRdPos/1000 ≥ sl`, `VRdNeg/1000 ≤ sl`, `VRdMax/1000 ≥ sl`
+- **EBEA Slab-to-Wall** additionally: `selectedAnchorageLength ≥ AnchoLength`
+- **Horizontal**: `HRd/1000 ≥ HorizontalLoad`
+
+`utilizationRatio = max(bm / (MRdNeg/1e6), bm / (MRdPos/1e6), sl / (VRdPos/1000), sl / (VRdNeg/1000))` for slab types; `HorizontalLoad / (HRd/1000)` for horizontal.
+
+### Error handling
+If no products survive: dropdown shows "no model available".
+
+## Product code format (built by `buildProductCode()` in `addToList()`)
+
+### TEBEA
+```
+[SelectedType]-L[connectorLength]                    (slab-slab)
+[SelectedType]-L[connectorLength]-LR[anchorage]      (slab-wall)
+```
+
+### EBEA
+```
+[SelectedType] Dt[height+extraTop+extraBottom] [+IO[top]] [+IU[bottom]] SW[80|120] L[length] [S11=[anchorage]] REI120 [OQ]
+```
+- `+IO` / `+IU` included only when value > 0
+- `S11=` included only when Slab-to-Wall
+- `OQ` included only when crossbar toggle is **off**
+
+## What is NOT yet implemented
+
+Nothing from the core selection flow. Remaining possible enhancements:
+- Validation / user feedback beyond "no model available" (e.g. highlight which inputs caused no match)
+- Load-bearing calculation for HEd/HRd columns in non-horizontal rows (currently `null`)

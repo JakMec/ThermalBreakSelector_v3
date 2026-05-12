@@ -1,0 +1,242 @@
+# Product Selection Logic — Claude Code Instructions
+
+## 1. Concrete Cover (`concreteCover`)
+
+A dropdown whose **available options** depend on the selected break type and support. Update options dynamically whenever break type or support type changes.
+
+| Break type | `currentSupport`                | Dropdown options (mm) |
+|------------|---------------------------------|-----------------------|
+| TEBEA      | `'slab-slab'` or `'slab-wall'` | 35, 55                |
+| TEBEA      | `'horizontal'`                  | 35                    |
+| EBEA       | `'slab-slab'`                   | 30, 45                |
+| EBEA       | any other support               | 30                    |
+
+Store the selected value as `concreteCover`.
+
+---
+
+## 2. Concrete Strength (`concreteStrength`)
+
+Derive from the selected concrete class dropdown:
+
+| Selected class | `concreteStrength` |
+|----------------|--------------------|
+| C20/25         | 20                 |
+| C25/30         | 25                 |
+| C30/37         | 30                 |
+
+---
+
+## 3. Load Variables
+
+| UI Label        | Variable           |
+|-----------------|--------------------|
+| Bending moment  | `bendingMoment`    |
+| Shear load      | `shearLoad`        |
+| Horizontal load | `HorizontalLoad`   |
+
+---
+
+## 4. Anchorage Length
+
+- **Enabled only** when `currentSupport === 'slab-wall'`.
+- The input is a **range slider** (step: 5 mm).
+
+| Break type | Min | Max | Default |
+|------------|-----|-----|---------|
+| TEBEA      | 145 | 220 | 145     |
+| EBEA       | 120 | 220 | 145     |
+
+---
+
+## 5. EBEA-Only Options
+
+The following checkboxes/toggles are **enabled only when EBEA is selected** (disabled/hidden for TEBEA):
+
+- Extra insulation on the top (`extraInsulationOnTop`)
+- Extra insulation at the bottom (`extraInsulationOnBottom`)
+- Without crossbar
+
+---
+
+## 6. Selection Procedure (triggered by "Select" button)
+
+### Step 1 — Filter `productDatabase` by exact-match criteria
+
+From `productDatabase`, return all `ProductType` entries where **all** of the following match:
+
+```
+Type            === currentSupport
+Height          === connector-height      (from UI)
+f_ck            === concreteStrength       (derived in §2)
+TopCover        === concreteCover          (user-selected in §1)
+ProductFamily   === currentBreakType       (TEBEA or EBEA)
+InsThickness    === currentInsulation      (from UI)
+```
+
+### Step 2 — Derive bending & shear flags from load-direction toggles
+
+```
+if      loadDirs.bm === 'negBm'      → DoubleBending = false
+else if loadDirs.bm === 'posNegBm'   → DoubleBending = true
+
+if      loadDirs.sl === 'posSl'      → DoubleShear = false
+else if loadDirs.sl === 'posNegSl'   → DoubleShear = true
+```
+
+Include `DoubleBending` and `DoubleShear` in the filter so only products matching these flags survive.
+
+### Step 3 — Narrow by user-entered loads
+
+> **Utilization ratio calculation:**
+> `utilizationRatio` is the **maximum** of the following applicable ratios:
+>
+> For `'slab-slab'` and `'slab-wall'`:
+> ```
+> utilizationRatio = max(
+>     bendingMoment / (ProductDatabase[MRdNeg] / 1_000_000),
+>     bendingMoment / (ProductDatabase[MRdPos] / 1_000_000),
+>     shearLoad     / (ProductDatabase[VRdPos] / 1_000),
+>     shearLoad     / (ProductDatabase[VRdNeg] / 1_000)
+> )
+> ```
+>
+> For `'horizontal'`:
+> ```
+> utilizationRatio = HorizontalLoad / (ProductDatabase[HRd] / 1_000)
+> ```
+>
+> **Global rule (applies to ALL cases below):**
+> The utilization ratio of every matching product must satisfy:
+> ```
+> utilizationRatio <= MaximumUtilization.value / 100
+> ```
+
+#### TEBEA — `'slab-slab'` or `'slab-wall'`
+
+All of the following must be true:
+
+```
+ProductDatabase[MRdNeg] / 1_000_000 <= bendingMoment
+ProductDatabase[MRdPos] / 1_000_000 >= bendingMoment
+ProductDatabase[VRdPos] / 1_000     >= shearLoad
+ProductDatabase[VRdNeg] / 1_000     <= shearLoad
+ProductDatabase[VRdMax] / 1_000     >= shearLoad
+utilizationRatio                    <= MaximumUtilization.value / 100
+```
+
+#### EBEA — `'slab-slab'`
+
+Same load checks as TEBEA above:
+
+```
+ProductDatabase[MRdNeg] / 1_000_000 <= bendingMoment
+ProductDatabase[MRdPos] / 1_000_000 >= bendingMoment
+ProductDatabase[VRdPos] / 1_000     >= shearLoad
+ProductDatabase[VRdNeg] / 1_000     <= shearLoad
+ProductDatabase[VRdMax] / 1_000     >= shearLoad
+utilizationRatio                    <= MaximumUtilization.value / 100
+```
+
+#### EBEA — `'slab-wall'`
+
+All of the above load checks **plus** an anchorage length check:
+
+```
+ProductDatabase[MRdNeg] / 1_000_000 <= bendingMoment
+ProductDatabase[MRdPos] / 1_000_000 >= bendingMoment
+ProductDatabase[VRdPos] / 1_000     >= shearLoad
+ProductDatabase[VRdNeg] / 1_000     <= shearLoad
+ProductDatabase[VRdMax] / 1_000     >= shearLoad
+AND
+selectedAnchorageLength (S11) >= closest smaller value in ProductDatabase[S11]
+AND
+utilizationRatio               <= MaximumUtilization.value / 100
+```
+
+The selected anchorage length from the UI must be **≥** the nearest smaller `S11` value found in the database for that product.
+
+#### Both TEBEA and EBEA — `'horizontal'`
+
+```
+ProductDatabase[HRd] / 1_000 >= HorizontalLoad
+utilizationRatio              <= MaximumUtilization.value / 100
+```
+
+### Error Handling
+
+If no `ProductType` entries survive filtering, display **"no model available"** in the "Selected type" dropdown.
+
+---
+
+## 7. Connector Length
+
+A dropdown populated dynamically based on the selected product:
+
+| Break type | Range                          | Step   | Default                         |
+|------------|--------------------------------|--------|----------------------------------|
+| TEBEA      | `minLength` to `ProductLength` | 500 mm | `ProductLength` (from database)  |
+| EBEA       | `minLength` to `ProductLength` | 50 mm  | `ProductLength` (from database)  |
+
+- `minLength` and `ProductLength` are read from the `productDatabase` for the currently selected product.
+- The default selection is `ProductLength`.
+- Update the dropdown options whenever the selected product changes.
+
+---
+
+## 8. Add to Table (triggered by "Add" button)
+
+When the user presses **Add**, the selected product is copied to the table on the right-hand side as a **product code string**.
+
+### EBEA Product Code
+
+Format:
+
+```
+[SelectedType] Dt[totalHeight] +IO[extraInsulationOnTop] +IU[extraInsulationOnBottom] SW[currentInsulation] L[connectorLength] S11=[anchorageLength] [FireRating] [RebarType]
+```
+
+**Variables:**
+
+| Variable                  | Source                                                                  |
+|---------------------------|-------------------------------------------------------------------------|
+| `SelectedType`            |  Selected value from the dropdown                         |
+| `totalHeight`             | `height + extraInsulationOnTop + extraInsulationOnBottom`               |
+| `extraInsulationOnTop`    | User input; include `+IO[value]` **only if value > 0**                 |
+| `extraInsulationOnBottom` | User input; include `+IU[value]` **only if value > 0**                 |
+| `currentInsulation`       | User-selected insulation width                                          |
+| `connectorLength`         | Selected connector length (§7)                                          |
+| `anchorageLength`         | Selected anchorage length; include `S11=[value]` **only if `currentSupport === 'slab-wall'`** |
+| `FireRating`              | Default: `REI120`                                                       |
+| `RebarType`               | If "Without crossbar" toggle is **off** → `OQ`; if **on** → omit entirely |
+
+**Example:**
+
+```
+EBEA-P8 Dt200 +IO30 SW120 L1000 S11=160 REI120 OQ
+```
+
+(no `+IU` because bottom insulation is 0; crossbar toggle is off so `OQ` is included)
+
+### TEBEA Product Code
+
+Format:
+
+```
+[SelectedType]-L[connectorLength]-LR[anchorageLength]
+```
+
+**Rules:**
+
+| Variable          | Source                                                            |
+|-------------------|-------------------------------------------------------------------|
+| `SelectedType`    | Selected value from the dropdown                                   |
+| `connectorLength` | Selected connector length (§7)                                     |
+| `anchorageLength` | Include `-LR[value]` **only if `currentSupport === 'slab-wall'`** |
+
+**Examples:**
+
+```
+TEBEA-K10-L2000              (slab-slab, no anchorage segment)
+TEBEA-K10-L2000-LR180        (slab-wall, anchorage included)
+```

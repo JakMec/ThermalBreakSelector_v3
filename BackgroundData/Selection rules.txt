@@ -1,0 +1,97 @@
+UI control: Thermal break type toggle
+  JS variable: currentBreakType
+  HTML element ID: btn-ebea / btn-tebea  Values: 'ebea' / 'tebea'
+  ────────────────────────────────────────  UI control: ISO 80 / ISO 120 toggle
+  JS variable: currentInsulation
+  HTML element ID: btn-iso80 / btn-iso120
+  Values: 'iso80' / 'iso120'
+  ────────────────────────────────────────
+  UI control: C20/25, C25/30, C30/37 dropdown
+  JS variable: document.getElementById('concrete-grade').value
+  HTML element ID: concrete-grade
+  Values: '20' / '25' / '30' (read at use time, no dedicated variable)
+  ────────────────────────────────────────
+  UI control: Balcony connector height
+  JS variable: document.getElementById('connector-height').value
+  HTML element ID: connector-height
+  Values: '160'–'300' (string)
+  ────────────────────────────────────────
+  UI control: Connector length
+  JS variable: document.getElementById('connector-length').value
+  HTML element ID: connector-length
+  Values: '250' / '500' / '1000' (string)
+  ────────────────────────────────────────
+  UI control: Bending moment value
+  JS variable: document.getElementById('bending-moment').value
+  HTML element ID: bending-moment
+  Values: free numeric input (string)
+  ────────────────────────────────────────
+  UI control: Shear load value
+  JS variable: document.getElementById('shear-load').value
+  HTML element ID: shear-load
+  Values: free numeric input (string)
+  ────────────────────────────────────────
+  UI control: Horizontal load value
+  JS variable: document.getElementById('horizontal-load').value
+  HTML element ID: horizontal-load
+  Values: free numeric input (string)
+
+  Additional related variables you'll likely also need for DB filtering:
+  - currentSupport — 'slab-slab' / 'slab-wall' / 'horizontal'
+  - document.getElementById('concrete-cover').value — 'CC35' or 'CC55' (maps to DB
+  TopCover 35/55)
+  - Load directions: loadDirs.bm ('ccw'/'cw') and loadDirs.sl ('up'/'down') — needed to
+  pick MRdPos/MRdNeg and VRdPos/VRdNeg
+
+
+Filter columns (map directly to UI inputs):
+
+  CSV column: ProductFamily (col 21)  Values: TEBEA / EBEA
+  Maps to UI: Thermal break type toggle  ────────────────────────────────────────
+  CSV column: InsThickness (col 20)
+  Values: 80 / 120
+  Maps to UI: ISO 80 / ISO 120 toggle
+  ────────────────────────────────────────
+  CSV column: Type (col 26)
+  Values: Slab-to-Slab / Slab-to-Wall / Horizontal El.
+  Maps to UI: Type of support buttons
+  ────────────────────────────────────────
+  CSV column: TopCover (col 7)
+  Values: 35 / 55
+  Maps to UI: CC35 / CC55 dropdown
+  ────────────────────────────────────────
+  CSV column: f__ck (col 9)
+  Values: 20 / 25 / 30
+  Maps to UI: C20/25, C25/30, C30/37 dropdown
+  ────────────────────────────────────────
+  CSV column: Height (col 6)
+  Values: 160–300 step 10
+  Maps to UI: Balcony connector height dropdown
+  ────────────────────────────────────────
+  CSV column: ProductLength (col 8)
+  Values: 250 / 300 / 500 / 1000
+  Maps to UI: Connector length dropdown
+
+  Capacity output columns (will fill the results table):
+
+  ┌─────────────────────────────┬────────────┬─────────────────────────────────────┐
+  │         CSV column          │ Unit in DB │            Table column             │
+  ├─────────────────────────────┼────────────┼─────────────────────────────────────┤
+  │ MRdPos / MRdNeg (col 10/11) │ N·mm/m     │ mRd [kNm/m] → ÷ 1,000,000           │
+  ├─────────────────────────────┼────────────┼─────────────────────────────────────┤
+  │ VRdPos / VRdNeg (col 12/13) │ N/m        │ vRd [kN/m] → ÷ 1,000                │
+  ├─────────────────────────────┼────────────┼─────────────────────────────────────┤
+  │ HRd (col 16)                │ N          │ HRd [kN] → ÷ 1,000                  │
+  ├─────────────────────────────┼────────────┼─────────────────────────────────────┤
+  │ SpringStiff (col 18)        │ N·mm/rad/m │ Stiffness [kNm/rad/m] → ÷ 1,000,000 │
+  ├─────────────────────────────┼────────────┼─────────────────────────────────────┤
+  │ LambdaEq (col 19)           │ —          │ (thermal, not in results table)     │
+  └─────────────────────────────┴────────────┴─────────────────────────────────────┘
+
+  Other notable columns:
+  - ProductType (col 1) — full product name, e.g. TEBEA CM1-V1-CC35-H160
+  - LoadFamily / LoadLevel (col 2/3) — connector size family, e.g. CM1–CM4, HM1, E, LM…
+  - ShearFamily / ShearLevel (col 4/5) — shear variant, e.g. V/VV/W
+  - DoubleShear (col 25) — TRUE/FALSE, whether shear in both directions
+  - AnchoLength (col 22) — anchorage length value
+  - minLength (col 23) — minimum product length

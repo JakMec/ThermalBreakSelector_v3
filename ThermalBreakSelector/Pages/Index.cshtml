@@ -118,10 +118,10 @@
             <div class="flex gap-1 mb-2">
                 <input type="number" id="bending-moment" placeholder="Bending moment" step="any"
                        class="flex-1 border border-gray-300 rounded px-2 py-1 min-w-0 bg-white text-gray-900">
-                <button id="btn-bm-ccw" onclick="setLoadDir('bm','ccw')" title="Counter-clockwise (positive)"
-                        class="border border-gray-300 bg-white rounded px-1.5 py-1 text-gray-500 hover:bg-gray-100 leading-none">&#8634;</button>
-                <button id="btn-bm-cw" onclick="setLoadDir('bm','cw')" title="Clockwise (negative)"
-                        class="border border-gray-300 bg-white rounded px-1.5 py-1 text-gray-500 hover:bg-gray-100 leading-none">&#8635;</button>
+                <button id="btn-bm-negBm" onclick="setLoadDir('bm','negBm')" title="Negative bending moment"
+                        class="border border-gray-300 bg-white rounded px-2 py-1 text-gray-500 hover:bg-gray-100 font-semibold leading-none">−</button>
+                <button id="btn-bm-posNegBm" onclick="setLoadDir('bm','posNegBm')" title="Positive and negative bending moment"
+                        class="border border-gray-300 bg-white rounded px-2 py-1 text-gray-500 hover:bg-gray-100 font-semibold leading-none">&plusmn;</button>
             </div>
 
             <!-- Shear load -->
@@ -129,28 +129,16 @@
             <div class="flex gap-1 mb-2">
                 <input type="number" id="shear-load" placeholder="Shear load" step="any"
                        class="flex-1 border border-gray-300 rounded px-2 py-1 min-w-0 bg-white text-gray-900">
-                <button id="btn-sl-up" onclick="setLoadDir('sl','up')" title="Upward"
-                        class="border border-gray-300 bg-white rounded px-1.5 py-1 text-gray-500 hover:bg-gray-100 leading-none">&#8593;</button>
-                <button id="btn-sl-down" onclick="setLoadDir('sl','down')" title="Downward"
-                        class="border border-gray-300 bg-white rounded px-1.5 py-1 text-gray-500 hover:bg-gray-100 leading-none">&#8595;</button>
+                <button id="btn-sl-posSl" onclick="setLoadDir('sl','posSl')" title="Positive shear load"
+                        class="border border-gray-300 bg-white rounded px-2 py-1 text-gray-500 hover:bg-gray-100 font-semibold leading-none">+</button>
+                <button id="btn-sl-posNegSl" onclick="setLoadDir('sl','posNegSl')" title="Positive and negative shear load"
+                        class="border border-gray-300 bg-white rounded px-2 py-1 text-gray-500 hover:bg-gray-100 font-semibold leading-none">&plusmn;</button>
             </div>
 
             <!-- Horizontal load -->
             <div class="text-teal-600 mb-1">Horizontal load [kN]</div>
             <input type="number" id="horizontal-load" placeholder="Horizontal load" step="any" disabled
                    class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-gray-100 text-gray-400 cursor-not-allowed">
-
-            <!-- Balcony connector height -->
-            <div class="text-teal-600 mb-1">Balcony connector height</div>
-            <select id="connector-height" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white"></select>
-
-            <!-- Balcony slab concrete grade -->
-            <div class="text-teal-600 mb-1">Balcony slab concrete grade</div>
-            <select id="concrete-grade" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white">
-                <option>C20/25</option>
-                <option selected>C25/30</option>
-                <option>C30/37</option>
-            </select>
 
             <!-- Thermal insulation thickness -->
             <div class="text-teal-600 mb-1">Thermal insulation thickness</div>
@@ -170,14 +158,23 @@
                         class="flex-1 border border-gray-300 rounded-r py-1 bg-white text-gray-700">TEBEA</button>
             </div>
 
+            <!-- Balcony connector height -->
+            <div class="text-teal-600 mb-1">Balcony connector height</div>
+            <select id="connector-height" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white"></select>
+
+            <!-- Balcony slab concrete grade -->
+            <div class="text-teal-600 mb-1">Balcony slab concrete grade</div>
+            <select id="concrete-grade" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white">
+                <option>C20/25</option>
+                <option selected>C25/30</option>
+                <option>C30/37</option>
+            </select>
+
             <!-- Concrete cover + Maximum utilization -->
             <div class="flex gap-2 mb-2">
                 <div class="flex-1">
                     <div class="text-teal-600 mb-1">Concrete cover</div>
-                    <select id="concrete-cover" class="w-full border border-gray-300 rounded px-2 py-1 bg-white">
-                        <option value="CC35" selected>CC35</option>
-                        <option value="CC55">CC55</option>
-                    </select>
+                    <select id="concrete-cover" class="w-full border border-gray-300 rounded px-2 py-1 bg-white"></select>
                 </div>
                 <div class="flex-1">
                     <div class="text-teal-600 mb-1">Maximum utilization</div>
@@ -195,15 +192,20 @@
         <div class="border border-gray-300 m-2 p-2 rounded">
 
             <div class="text-teal-600 font-semibold mb-1">Selected type</div>
-            <select id="selected-type" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white">
+            <select id="selected-type" onchange="onSelectedTypeChange()" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white">
                 <option value="">Select</option>
             </select>
 
             <div class="text-teal-600 mb-1">Connector length [mm]</div>
             <select id="connector-length" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white"></select>
 
-            <div class="text-teal-600 mb-1">Anchorage length [mm]</div>
-            <select id="anchorage-length" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white"></select>
+            <div class="flex items-center gap-2 mb-1">
+                <div class="text-teal-600">Anchorage length [mm]</div>
+                <span id="anchorage-length-val" class="ml-auto font-semibold text-gray-700">145</span>
+            </div>
+            <input type="range" id="anchorage-length" min="145" max="220" step="5" value="145" disabled
+                   class="w-full mb-2 accent-teal-500 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                   oninput="document.getElementById('anchorage-length-val').textContent=this.value">
 
             <div class="text-teal-600 mb-1">Extra insulation on the top [mm]</div>
             <select id="extra-ins-top" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white"></select>
@@ -211,7 +213,7 @@
             <div class="text-teal-600 mb-1">Extra insulation in the bottom [mm]</div>
             <select id="extra-ins-bottom" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white"></select>
 
-            <div class="flex items-center gap-2 mb-2 cursor-pointer" onclick="toggleCrossbar()">
+            <div id="crossbar-row" class="flex items-center gap-2 mb-2 cursor-pointer" onclick="toggleCrossbar()">
                 <div class="relative w-10 h-5 shrink-0">
                     <div id="crossbar-track" class="absolute inset-0 bg-gray-300 rounded-full transition-colors duration-200"></div>
                     <div id="crossbar-knob" class="absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200"></div>
