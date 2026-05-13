@@ -1,4 +1,4 @@
-@page
+@page "/ThermalBreakSelector.html"
 @model IndexModel
 @{
     ViewData["Title"] = "Thermal Break Selector";
@@ -261,7 +261,7 @@
     <div class="flex-1 flex flex-col overflow-hidden p-2 min-w-0">
 
         <!-- Action buttons -->
-        <div class="flex mb-2 shrink-0">
+        <div id="action-btns" class="flex mb-2 shrink-0">
             <button onclick="deleteSelected()" title="Delete selected rows"
                     class="border border-gray-300 rounded px-2 py-1 hover:bg-gray-50 flex items-center text-gray-600">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -282,19 +282,19 @@
                         <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-left font-medium">No.</th>
                         <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-left font-medium">Position</th>
                         <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-left font-medium">Connector</th>
-                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">Length [mm]</th>
-                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">Quantity [pcs]</th>
+                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">Length <span class="th-unit">[mm]</span></th>
+                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">Quantity <span class="th-unit">[pcs]</span></th>
                         <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-center font-medium">Edit</th>
-                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">mEd [kNm/m]</th>
-                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">mRd [kNm/m]</th>
-                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-center font-medium">&eta;m</th>
-                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">vEd [kN/m]</th>
-                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">vRd [kN/m]</th>
-                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-center font-medium">&eta;V</th>
-                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">HEd [kN]</th>
-                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">HRd [kN]</th>
-                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-center font-medium">&eta;H</th>
-                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">Stiffness [kNm/rad/m]</th>
+                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">mEd <span class="th-unit">[kNm/m]</span></th>
+                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">mRd <span class="th-unit">[kNm/m]</span></th>
+                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-center font-medium">&eta;M <span class="th-unit">[-]</span></th>
+                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">vEd <span class="th-unit">[kN/m]</span></th>
+                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">vRd <span class="th-unit">[kN/m]</span></th>
+                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-center font-medium">&eta;V <span class="th-unit">[-]</span></th>
+                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">HEd <span class="th-unit">[kN]</span></th>
+                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">HRd <span class="th-unit">[kN]</span></th>
+                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-center font-medium">&eta;H <span class="th-unit">[-]</span></th>
+                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">Stiffness <span class="th-unit">[kNm/rad/m]</span></th>
                     </tr>
                 </thead>
                 <tbody id="table-body"></tbody>

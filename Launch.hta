@@ -1,0 +1,35 @@
+<html>
+<head>
+<title>Thermal Break Selector</title>
+<HTA:APPLICATION ID="oHTA"
+    APPLICATIONNAME="Thermal Break Selector"
+    WINDOWSTATE="minimize"
+    SHOWINTASKBAR="no"
+    BORDER="none"
+    CAPTION="no"
+    SCROLL="no"
+    SINGLEINSTANCE="yes"
+/>
+<script language="JScript">
+window.onload = function () {
+    var shell = new ActiveXObject("WScript.Shell");
+
+    // Resolve the directory that contains this .hta file
+    var raw = document.location.pathname.replace(/^\//, "").replace(/\//g, "\\");
+    var dir = raw.substring(0, raw.lastIndexOf("\\") + 1);
+
+    // Launch the server exe (hidden console window)
+    shell.Run('"' + dir + 'ThermalBreakSelector.exe"', 0, false);
+
+    // Wait for Kestrel to start, then open the browser
+    window.setTimeout(function () {
+        shell.Run("http://localhost:5100/ThermalBreakSelector.html", 1, false);
+        window.setTimeout(function () { window.close(); }, 500);
+    }, 3000);
+};
+</script>
+</head>
+<body style="background:#f8fafc;font-family:sans-serif;padding:24px;color:#334155;">
+    <p style="font-size:14px;">Starting Thermal Break Selector&hellip;</p>
+</body>
+</html>

@@ -1,0 +1,4 @@
+C:\CSharp_projects\ThermalBreakSelector_v3\dist\appsettings.Development.json
+C:\CSharp_projects\ThermalBreakSelector_v3\dist\appsettings.json
+C:\CSharp_projects\ThermalBreakSelector_v3\dist\ThermalBreakSelector.pdb
+C:\CSharp_projects\ThermalBreakSelector_v3\dist\ThermalBreakSelector.exe

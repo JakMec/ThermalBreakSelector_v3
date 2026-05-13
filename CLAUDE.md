@@ -6,12 +6,22 @@ An ASP.NET Core Razor Pages web application for selecting thermal break connecto
 
 ## How to run
 
+### Development
 ```bash
 cd "C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector"
 dotnet run --launch-profile http
 ```
 
-Then open **http://localhost:5100** in the browser.
+Then open **http://localhost:5100/ThermalBreakSelector.html** in the browser.
+
+### Portable distribution (self-contained exe)
+Build the `dist/` folder by running `build-dist.bat` at the repo root:
+```
+build-dist.bat
+```
+This runs `dotnet publish` with the `SelfContained-win-x64` profile, then copies the CSV and launchers into `dist/`.
+
+Double-click `dist\Launch.bat` (or `dist\Launch.hta`) to start the server and open the browser automatically. The exe serves at **http://localhost:5100/ThermalBreakSelector.html** — no .NET runtime install required on the target machine.
 
 ## Tech stack
 
@@ -29,7 +39,7 @@ ThermalBreakSelector/
 ├── Pages/
 │   ├── Shared/
 │   │   └── _Layout.cshtml        # Minimal layout — Tailwind CDN, no Bootstrap
-│   ├── Index.cshtml              # Main application UI
+│   ├── Index.cshtml              # Main application UI — route: /ThermalBreakSelector.html
 │   ├── Index.cshtml.cs           # Minimal page model (OnGet only)
 │   ├── _ViewImports.cshtml
 │   └── _ViewStart.cshtml
@@ -39,9 +49,22 @@ ThermalBreakSelector/
 │   └── js/
 │       └── app.js                # All front-end logic
 ├── Properties/
-│   └── launchSettings.json       # HTTP: 5100, HTTPS: 7181
-├── Program.cs                    # Minimal API + Razor Pages setup; hosts /api/database endpoint
+│   ├── launchSettings.json       # HTTP: 5100, HTTPS: 7181
+│   └── PublishProfiles/
+│       └── SelfContained-win-x64.pubxml  # Single-file win-x64 publish → dist/
+├── Program.cs                    # Minimal API + Razor Pages; /api/database; port 5100 in prod
 └── appsettings.json
+
+# Repo root
+build-dist.bat                    # Build script: dotnet publish + copy CSV + launchers to dist/
+Launch.bat                        # Launcher template (copied to dist/ by build-dist.bat)
+Launch.hta                        # HTA launcher template (copied to dist/ by build-dist.bat)
+dist/                             # Published output (gitignore this folder)
+├── ThermalBreakSelector.exe      # Self-contained win-x64 exe (~48 MB)
+├── 2026_05_11 ConnectorDatabase.csv
+├── wwwroot/                      # Static assets (CSS, JS, images)
+├── Launch.bat
+└── Launch.hta
 ```
 
 ## UI layout
@@ -184,7 +207,7 @@ Served at runtime via `GET /api/database` (defined in `Program.cs` as a minimal 
 | `VRdPos` / `VRdNeg` (col 12/13) | N/m | vRd [kN/m] — divide by 1 000 |
 | `VRdMax` (col 14) | N/m | max shear check — divide by 1 000 |
 | `HRd` (col 16) | N | HRd [kN] — divide by 1 000 |
-| `SpringStiff` (col 18) | N·mm/rad/m | Stiffness [kNm/rad/m] — divide by 1 000 000 |
+| `SpringStiff` (col 18) | kNm/rad/m | Stiffness [kNm/rad/m] — already in final units, no conversion needed |
 
 ### Other notable columns
 

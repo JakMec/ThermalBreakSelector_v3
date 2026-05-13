@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ThermalBreakSelector")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3efd2701346dce1bf31fdd57b13f8c3d9afb45bd")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+28339373d73f068295593e489813c99fe740a5e9")]
 [assembly: System.Reflection.AssemblyProductAttribute("ThermalBreakSelector")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ThermalBreakSelector")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

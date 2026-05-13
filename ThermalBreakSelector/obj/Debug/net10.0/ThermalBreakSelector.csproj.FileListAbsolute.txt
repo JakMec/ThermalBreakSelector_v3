@@ -95,5 +95,5 @@ C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.
 C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.0\ThermalBreakSelector.pdb
 C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.0\ThermalBreakSelector.genruntimeconfig.cache
 C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.0\ref\ThermalBreakSelector.dll
-C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.0\compressed\4h29jviuub-{0}-9e3ajq9p3b-9e3ajq9p3b.gz
-C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.0\compressed\f1l3fzkyoi-{0}-e4nnusp5dg-e4nnusp5dg.gz
+C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.0\compressed\f1l3fzkyoi-{0}-0fj0owmztj-0fj0owmztj.gz
+C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.0\compressed\4h29jviuub-{0}-tsc8yh7p88-tsc8yh7p88.gz
