@@ -6,22 +6,14 @@ An ASP.NET Core Razor Pages web application for selecting thermal break connecto
 
 ## How to run
 
-### Development
+Run via IDE (F5) or from the command line:
+
 ```bash
 cd "C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector"
 dotnet run --launch-profile http
 ```
 
 Then open **http://localhost:5100/ThermalBreakSelector.html** in the browser.
-
-### Portable distribution (self-contained exe)
-Build the `dist/` folder by running `build-dist.bat` at the repo root:
-```
-build-dist.bat
-```
-This runs `dotnet publish` with the `SelfContained-win-x64` profile, then copies the CSV and launchers into `dist/`.
-
-Double-click `dist\Launch.bat` (or `dist\Launch.hta`) to start the server and open the browser automatically. The exe serves at **http://localhost:5100/ThermalBreakSelector.html** — no .NET runtime install required on the target machine.
 
 ## Tech stack
 
@@ -46,25 +38,20 @@ ThermalBreakSelector/
 ├── wwwroot/
 │   ├── css/
 │   │   └── site.css              # Print/PDF styles, scrollbar overrides
+│   ├── img/
+│   │   ├── slab-slab.svg         # Type of support icon (from BackgroundData/Group 91.svg)
+│   │   ├── slab-wall.svg         # Type of support icon (from BackgroundData/Group 93.svg)
+│   │   └── horizontal-el.svg     # Type of support icon (from BackgroundData/Connertor type icons.svg)
 │   └── js/
 │       └── app.js                # All front-end logic
 ├── Properties/
-│   ├── launchSettings.json       # HTTP: 5100, HTTPS: 7181
-│   └── PublishProfiles/
-│       └── SelfContained-win-x64.pubxml  # Single-file win-x64 publish → dist/
-├── Program.cs                    # Minimal API + Razor Pages; /api/database; port 5100 in prod
+│   └── launchSettings.json       # HTTP: 5100, HTTPS: 7181
+├── Program.cs                    # Minimal API + Razor Pages; /api/database
 └── appsettings.json
 
 # Repo root
-build-dist.bat                    # Build script: dotnet publish + copy CSV + launchers to dist/
-Launch.bat                        # Launcher template (copied to dist/ by build-dist.bat)
-Launch.hta                        # HTA launcher template (copied to dist/ by build-dist.bat)
-dist/                             # Published output (gitignore this folder)
-├── ThermalBreakSelector.exe      # Self-contained win-x64 exe (~48 MB)
-├── 2026_05_11 ConnectorDatabase.csv
-├── wwwroot/                      # Static assets (CSS, JS, images)
-├── Launch.bat
-└── Launch.hta
+BackgroundData/
+└── 2026_05_11 ConnectorDatabase.csv   # Product database (~11 770 rows)
 ```
 
 ## UI layout
@@ -88,9 +75,10 @@ The page is a full-height flex row with three zones:
 
 ## Button data
 
-| Control | Values |
+| Control | Values / notes |
 |---|---|
-| Type of support | Slab-to-Slab (default, active on load), Slab-to-Wall, Horizontal el. |
+| Type of support | Slab-to-Slab (default, active on load), Slab-to-Wall, Horizontal el. — SVG icon buttons; all three start with identical inactive HTML classes (`border border-gray-300 bg-white`); JS `setSupport()` applies the teal active state on init and on click |
+| Slab-to-Wall tooltip | "Short anchorage for slab-to-wall connection or offset connection" |
 | Thermal insulation thickness | ISO 80 (default active), ISO 120 |
 | Thermal break type | EBEA (default active), TEBEA — **TEBEA disabled when ISO 80 is selected** |
 

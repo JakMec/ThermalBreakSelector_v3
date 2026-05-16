@@ -1,13 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "QgrvlS8k3q0=",
+  "dgSpecHash": "Z/E3aQ0CTHs=",
   "success": true,
   "projectFilePath": "C:\\CSharp_projects\\ThermalBreakSelector_v3\\ThermalBreakSelector\\ThermalBreakSelector.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\jakub\\.nuget\\packages\\microsoft.net.illink.tasks\\10.0.7\\microsoft.net.illink.tasks.10.0.7.nupkg.sha512",
-    "C:\\Users\\jakub\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\10.0.7\\microsoft.netcore.app.runtime.win-x64.10.0.7.nupkg.sha512",
-    "C:\\Users\\jakub\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\10.0.7\\microsoft.windowsdesktop.app.runtime.win-x64.10.0.7.nupkg.sha512",
-    "C:\\Users\\jakub\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\10.0.7\\microsoft.aspnetcore.app.runtime.win-x64.10.0.7.nupkg.sha512"
-  ],
+  "expectedPackageFiles": [],
   "logs": []
 }

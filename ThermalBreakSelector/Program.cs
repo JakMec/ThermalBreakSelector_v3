@@ -5,25 +5,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
 
-// Production: serve from the exe's directory (single-file apps extract to a temp dir,
-// but wwwroot and the static-assets manifest live next to the exe)
-if (!builder.Environment.IsDevelopment())
-{
-    var exeDir = Path.GetDirectoryName(Environment.ProcessPath) ?? AppContext.BaseDirectory;
-    builder.Host.UseContentRoot(exeDir);
-    builder.WebHost.UseUrls("http://localhost:5100");
-}
-
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseHttpsRedirection();
-}
-else
-{
-    app.UseExceptionHandler("/Error");
-}
+app.UseExceptionHandler("/Error");
 
 app.UseRouting();
 app.UseAuthorization();
@@ -40,11 +24,7 @@ app.MapGet("/", ctx =>
 app.MapGet("/api/database", (IWebHostEnvironment env) =>
 {
     const string csvName = "2026_05_11 ConnectorDatabase.csv";
-    // Production: CSV lives next to the exe; Development: BackgroundData sibling folder
-    var exeDir = Path.GetDirectoryName(Environment.ProcessPath) ?? AppContext.BaseDirectory;
-    var csvPath = Path.Combine(exeDir, csvName);
-    if (!File.Exists(csvPath))
-        csvPath = Path.Combine(env.ContentRootPath, "..", "BackgroundData", csvName);
+    var csvPath = Path.Combine(env.ContentRootPath, "..", "BackgroundData", csvName);
     if (!File.Exists(csvPath))
         return Results.NotFound("Database file not found");
 
