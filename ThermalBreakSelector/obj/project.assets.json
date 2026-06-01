@@ -8,26 +8,24 @@
     "net10.0": []
   },
   "packageFolders": {
-    "C:\\Users\\jakub\\.nuget\\packages\\": {}
+    "C:\\Users\\mecarjak\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\CSharp_projects\\ThermalBreakSelector_v3\\ThermalBreakSelector\\ThermalBreakSelector.csproj",
+      "projectUniqueName": "C:\\Users\\mecarjak\\OneDrive - Peikko Group Oy\\Documents\\1_Praca\\18_Peikko Designer\\2022 New Peikko Designer\\2026_04_09 TEBEA_EBEA Selector\\ThermalBreakSelector_v3\\ThermalBreakSelector\\ThermalBreakSelector.csproj",
       "projectName": "ThermalBreakSelector",
-      "projectPath": "C:\\CSharp_projects\\ThermalBreakSelector_v3\\ThermalBreakSelector\\ThermalBreakSelector.csproj",
-      "packagesPath": "C:\\Users\\jakub\\.nuget\\packages\\",
-      "outputPath": "C:\\CSharp_projects\\ThermalBreakSelector_v3\\ThermalBreakSelector\\obj\\",
+      "projectPath": "C:\\Users\\mecarjak\\OneDrive - Peikko Group Oy\\Documents\\1_Praca\\18_Peikko Designer\\2022 New Peikko Designer\\2026_04_09 TEBEA_EBEA Selector\\ThermalBreakSelector_v3\\ThermalBreakSelector\\ThermalBreakSelector.csproj",
+      "packagesPath": "C:\\Users\\mecarjak\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\mecarjak\\OneDrive - Peikko Group Oy\\Documents\\1_Praca\\18_Peikko Designer\\2022 New Peikko Designer\\2026_04_09 TEBEA_EBEA Selector\\ThermalBreakSelector_v3\\ThermalBreakSelector\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\jakub\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\mecarjak\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
