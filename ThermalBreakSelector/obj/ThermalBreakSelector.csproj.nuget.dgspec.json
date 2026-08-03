@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\mecarjak\\OneDrive - Peikko Group Oy\\Documents\\1_Praca\\18_Peikko Designer\\2022 New Peikko Designer\\2026_04_09 TEBEA_EBEA Selector\\ThermalBreakSelector_v3\\ThermalBreakSelector\\ThermalBreakSelector.csproj": {}
+    "C:\\PeikkoDesigner Repository\\ThermalBreakSelector_v3\\ThermalBreakSelector\\ThermalBreakSelector.csproj": {}
   },
   "projects": {
-    "C:\\Users\\mecarjak\\OneDrive - Peikko Group Oy\\Documents\\1_Praca\\18_Peikko Designer\\2022 New Peikko Designer\\2026_04_09 TEBEA_EBEA Selector\\ThermalBreakSelector_v3\\ThermalBreakSelector\\ThermalBreakSelector.csproj": {
+    "C:\\PeikkoDesigner Repository\\ThermalBreakSelector_v3\\ThermalBreakSelector\\ThermalBreakSelector.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mecarjak\\OneDrive - Peikko Group Oy\\Documents\\1_Praca\\18_Peikko Designer\\2022 New Peikko Designer\\2026_04_09 TEBEA_EBEA Selector\\ThermalBreakSelector_v3\\ThermalBreakSelector\\ThermalBreakSelector.csproj",
+        "projectUniqueName": "C:\\PeikkoDesigner Repository\\ThermalBreakSelector_v3\\ThermalBreakSelector\\ThermalBreakSelector.csproj",
         "projectName": "ThermalBreakSelector",
-        "projectPath": "C:\\Users\\mecarjak\\OneDrive - Peikko Group Oy\\Documents\\1_Praca\\18_Peikko Designer\\2022 New Peikko Designer\\2026_04_09 TEBEA_EBEA Selector\\ThermalBreakSelector_v3\\ThermalBreakSelector\\ThermalBreakSelector.csproj",
+        "projectPath": "C:\\PeikkoDesigner Repository\\ThermalBreakSelector_v3\\ThermalBreakSelector\\ThermalBreakSelector.csproj",
         "packagesPath": "C:\\Users\\mecarjak\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mecarjak\\OneDrive - Peikko Group Oy\\Documents\\1_Praca\\18_Peikko Designer\\2022 New Peikko Designer\\2026_04_09 TEBEA_EBEA Selector\\ThermalBreakSelector_v3\\ThermalBreakSelector\\obj\\",
+        "outputPath": "C:\\PeikkoDesigner Repository\\ThermalBreakSelector_v3\\ThermalBreakSelector\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\mecarjak\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -62,7 +62,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.203/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.204/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.AspNetCore": "(,10.0.32767]",
             "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",

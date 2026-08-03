@@ -127,7 +127,7 @@ function setSupport(type) {
         const btn = document.getElementById(`support-${t}`);
         if (!btn) return;
         const active = t === type;
-        btn.classList.toggle('border-teal-500', active);
+        btn.classList.toggle('theme-border', active);
         btn.classList.toggle('border-2', active);
         btn.classList.toggle('bg-teal-500', active);
         btn.classList.toggle('text-white', active);
@@ -200,7 +200,7 @@ function setLoadDir(load, dir) {
         if (!el) return;
         const active = d === dir;
         el.classList.toggle('bg-teal-500', active);
-        el.classList.toggle('border-teal-500', active);
+        el.classList.toggle('theme-border', active);
         el.classList.toggle('text-white', active);
         el.classList.toggle('border-gray-300', !active);
         el.classList.toggle('text-gray-500', !active);
@@ -238,7 +238,7 @@ function setPairToggle(idA, idB, aActive) {
         const el = document.getElementById(id);
         if (!el) return;
         el.classList.toggle('bg-teal-500', active);
-        el.classList.toggle('border-teal-500', active);
+        el.classList.toggle('theme-border', active);
         el.classList.toggle('text-white', active);
         el.classList.toggle('bg-white', !active);
         el.classList.toggle('border-gray-300', !active);

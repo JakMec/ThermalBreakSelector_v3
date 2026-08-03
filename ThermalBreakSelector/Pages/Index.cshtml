@@ -94,27 +94,27 @@
         <div class="border border-gray-300 m-2 p-2 rounded">
 
             <!-- Type of support -->
-            <div class="text-teal-600 font-semibold mb-1">Type of support</div>
+            <div class="theme-text font-semibold mb-1">Type of support</div>
             <div class="flex gap-1 mb-2">
                 <!-- Slab-to-Slab -->
                 <button id="support-slab-slab" onclick="setSupport('slab-slab')" title="Slab-to-Slab"
-                        class="support-btn flex-1 border border-gray-300 bg-white rounded p-1 flex justify-center items-center">
+                        class="btn-eng">
                     <img src="/img/slab-slab.svg" class="w-8 h-8 object-contain" alt="Slab-to-Slab">
                 </button>
                 <!-- Slab-to-Wall -->
                 <button id="support-slab-wall" onclick="setSupport('slab-wall')" title="Short anchorage for slab-to-wall connection or offset connection"
-                        class="support-btn flex-1 border border-gray-300 bg-white rounded p-1 flex justify-center items-center">
+                        class="btn-eng">
                     <img src="/img/slab-wall.svg" class="w-8 h-8 object-contain" alt="Slab-to-Wall">
                 </button>
                 <!-- Horizontal el. -->
                 <button id="support-horizontal" onclick="setSupport('horizontal')" title="Horizontal el."
-                        class="support-btn flex-1 border border-gray-300 bg-white rounded p-1 flex justify-center items-center">
+                        class="btn-eng">
                     <img src="/img/horizontal-el.svg" class="w-10 h-6 object-contain" alt="Horizontal el.">
                 </button>
             </div>
 
             <!-- Bending moment -->
-            <div class="text-teal-600 mb-1">Bending moment [kNm/m]</div>
+            <div class="theme-text mb-1">Bending moment [kNm/m]</div>
             <div class="flex gap-1 mb-2">
                 <input type="number" id="bending-moment" placeholder="Bending moment" step="any"
                        class="flex-1 border border-gray-300 rounded px-2 py-1 min-w-0 bg-white text-gray-900">
@@ -125,7 +125,7 @@
             </div>
 
             <!-- Shear load -->
-            <div class="text-teal-600 mb-1">Shear load [kN/m]</div>
+            <div class="theme-text mb-1">Shear load [kN/m]</div>
             <div class="flex gap-1 mb-2">
                 <input type="number" id="shear-load" placeholder="Shear load" step="any"
                        class="flex-1 border border-gray-300 rounded px-2 py-1 min-w-0 bg-white text-gray-900">
@@ -136,34 +136,34 @@
             </div>
 
             <!-- Horizontal load -->
-            <div class="text-teal-600 mb-1">Horizontal load [kN]</div>
+            <div class="theme-text mb-1">Horizontal load [kN]</div>
             <input type="number" id="horizontal-load" placeholder="Horizontal load" step="any" disabled
                    class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-gray-100 text-gray-400 cursor-not-allowed">
 
             <!-- Thermal insulation thickness -->
-            <div class="text-teal-600 mb-1">Thermal insulation thickness</div>
+            <div class="theme-text mb-1">Thermal insulation thickness</div>
             <div class="flex mb-2">
                 <button id="btn-iso80" onclick="selectInsulation('iso80')"
-                        class="flex-1 border border-teal-500 rounded-l py-1 bg-teal-500 text-white">ISO 80</button>
+                        class="flex-1 border theme-border rounded-l py-1 bg-teal-500 text-white">ISO 80</button>
                 <button id="btn-iso120" onclick="selectInsulation('iso120')"
                         class="flex-1 border border-gray-300 rounded-r py-1 bg-white text-gray-700">ISO 120</button>
             </div>
 
             <!-- Thermal break type -->
-            <div class="text-teal-600 mb-1">Thermal break type</div>
+            <div class="theme-text mb-1">Thermal break type</div>
             <div class="flex mb-2">
                 <button id="btn-ebea" onclick="selectBreakType('ebea')"
-                        class="flex-1 border border-teal-500 rounded-l py-1 bg-teal-500 text-white">EBEA</button>
+                        class="flex-1 border theme-border rounded-l py-1 bg-teal-500 text-white">EBEA</button>
                 <button id="btn-tebea" onclick="selectBreakType('tebea')"
                         class="flex-1 border border-gray-300 rounded-r py-1 bg-white text-gray-700">TEBEA</button>
             </div>
 
             <!-- Balcony connector height -->
-            <div class="text-teal-600 mb-1">Balcony connector height</div>
+            <div class="theme-text mb-1">Balcony connector height</div>
             <select id="connector-height" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white"></select>
 
             <!-- Balcony slab concrete grade -->
-            <div class="text-teal-600 mb-1">Balcony slab concrete grade</div>
+            <div class="theme-text mb-1">Balcony slab concrete grade</div>
             <select id="concrete-grade" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white">
                 <option>C20/25</option>
                 <option selected>C25/30</option>
@@ -173,11 +173,11 @@
             <!-- Concrete cover + Maximum utilization -->
             <div class="flex gap-2 mb-2">
                 <div class="flex-1">
-                    <div class="text-teal-600 mb-1">Concrete cover</div>
+                    <div class="theme-text mb-1">Concrete cover</div>
                     <select id="concrete-cover" class="w-full border border-gray-300 rounded px-2 py-1 bg-white"></select>
                 </div>
                 <div class="flex-1">
-                    <div class="text-teal-600 mb-1">Maximum utilization</div>
+                    <div class="theme-text mb-1">Maximum utilization</div>
                     <input type="number" id="max-utilization" value="100" min="0" max="200"
                            class="w-full border border-gray-300 rounded px-2 py-1 bg-white text-gray-900">
                 </div>
@@ -191,26 +191,26 @@
         <!-- Section 2: Selected type -->
         <div class="border border-gray-300 m-2 p-2 rounded">
 
-            <div class="text-teal-600 font-semibold mb-1">Selected type</div>
+            <div class="theme-text font-semibold mb-1">Selected type</div>
             <select id="selected-type" onchange="onSelectedTypeChange()" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white">
                 <option value="">Select</option>
             </select>
 
-            <div class="text-teal-600 mb-1">Connector length [mm]</div>
+            <div class="theme-text mb-1">Connector length [mm]</div>
             <select id="connector-length" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white"></select>
 
             <div class="flex items-center gap-2 mb-1">
-                <div class="text-teal-600">Anchorage length [mm]</div>
+                <div class="theme-text">Anchorage length [mm]</div>
                 <span id="anchorage-length-val" class="ml-auto font-semibold text-gray-700">145</span>
             </div>
             <input type="range" id="anchorage-length" min="145" max="220" step="5" value="145" disabled
                    class="w-full mb-2 accent-teal-500 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                    oninput="document.getElementById('anchorage-length-val').textContent=this.value">
 
-            <div class="text-teal-600 mb-1">Extra insulation on the top [mm]</div>
+            <div class="theme-text mb-1">Extra insulation on the top [mm]</div>
             <select id="extra-ins-top" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white"></select>
 
-            <div class="text-teal-600 mb-1">Extra insulation in the bottom [mm]</div>
+            <div class="theme-text mb-1">Extra insulation in the bottom [mm]</div>
             <select id="extra-ins-bottom" class="w-full border border-gray-300 rounded px-2 py-1 mb-2 bg-white"></select>
 
             <div id="crossbar-row" class="flex items-center gap-2 mb-2 cursor-pointer" onclick="toggleCrossbar()">
@@ -221,7 +221,7 @@
                 <span class="text-gray-700 select-none">Without crossbar</span>
             </div>
 
-            <div class="text-teal-600 mb-1">Position name</div>
+            <div class="theme-text mb-1">Position name</div>
             <input type="text" id="position-name" placeholder="Position"
                    class="w-full border border-gray-300 rounded px-2 py-1 mb-2">
 

@@ -1,0 +1,12 @@
+:root {
+    --primary: #09a9b5;
+    --primary-hover: #0895a0;
+    --primary-light: #c8eef1;
+
+    --border: #09a9b5;
+
+    --panel-bg: #e6e6e6;
+    --tab-bg: #8d9195;
+
+    --text-dark: #333;
+}
