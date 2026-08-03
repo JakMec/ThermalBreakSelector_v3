@@ -4,7 +4,21 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Thermal Break Selector</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    primary: 'var(--primary)',
+                    'primary-hover': 'var(--primary-hover)',
+                    'primary-light': 'var(--primary-light)',
+                    panel: 'var(--panel-bg)',
+                    tab: 'var(--tab-bg)',
+                }
+            }
+        }
+    }
+    </script>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true"/>
 </head>

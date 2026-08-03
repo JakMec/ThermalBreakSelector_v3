@@ -10,3 +10,49 @@
 
     --text-dark: #333;
 }
+
+/* Custom utility bindings for theme styling */
+.theme-text {
+    color: var(--text-dark);
+}
+
+.theme-border {
+    border-color: var(--border) !important;
+}
+
+.bg-theme-panel {
+    background-color: var(--panel-bg);
+}
+
+.bg-theme-tab {
+    background-color: var(--tab-bg);
+}
+
+.rounded-none-l {
+    border-top-left-radius: 0.125rem;
+    border-bottom-left-radius: 0.125rem;
+}
+
+.rounded-none-r {
+    border-top-right-radius: 0.125rem;
+    border-bottom-right-radius: 0.125rem;
+}
+
+/* Button Toggle Group States */
+.btn-toggle-active {
+    background-color: var(--primary) !important;
+    border-color: var(--border) !important;
+    color: #ffffff !important;
+}
+
+.btn-toggle-inactive {
+    background-color: #ffffff !important;
+    border-color: #d1d5db !important; /* light gray border */
+    color: #374151 !important;
+}
+
+/* Image/Support Selection Button States */
+.support-btn.active {
+    border: 2px solid var(--primary) !important;
+    background-color: var(--primary-light) !important;
+}
