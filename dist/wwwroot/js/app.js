@@ -508,7 +508,7 @@ function renderTable() {
             <td class="border border-gray-200 px-3 py-1 text-right">${row.quantity}</td>
             <td class="border border-gray-200 px-2 py-1 text-center">
                 <button onclick="openEditModal(${row.id})"
-                        class="border border-gray-300 rounded px-2 py-0.5 hover:bg-gray-100 text-xs">Edit</button>
+                        class="border border-gray-300 rounded-sm px-2 py-0.5 hover:bg-gray-100 text-xs">Edit</button>
             </td>
             <td class="border border-gray-200 px-3 py-1 text-right text-gray-400">${fmt(row.mEd)}</td>
             <td class="border border-gray-200 px-3 py-1 text-right text-gray-400">${fmt(row.mRd)}</td>
