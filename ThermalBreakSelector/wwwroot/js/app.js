@@ -129,7 +129,7 @@ function setSupport(type) {
         const active = t === type;
         btn.classList.toggle('theme-border', active);
         btn.classList.toggle('border-2', active);
-        btn.classList.toggle('bg-teal-500', active);
+        btn.classList.toggle('btn-eng-active', active);
         btn.classList.toggle('text-white', active);
         btn.classList.toggle('border-gray-300', !active);
         btn.classList.toggle('bg-white', !active);
@@ -199,7 +199,7 @@ function setLoadDir(load, dir) {
         const el = document.getElementById(id);
         if (!el) return;
         const active = d === dir;
-        el.classList.toggle('bg-teal-500', active);
+        el.classList.toggle('btn-eng-active', active);
         el.classList.toggle('theme-border', active);
         el.classList.toggle('text-white', active);
         el.classList.toggle('border-gray-300', !active);
@@ -237,7 +237,7 @@ function setPairToggle(idA, idB, aActive) {
     [[idA, aActive], [idB, !aActive]].forEach(([id, active]) => {
         const el = document.getElementById(id);
         if (!el) return;
-        el.classList.toggle('bg-teal-500', active);
+        el.classList.toggle('btn-eng-active', active);
         el.classList.toggle('theme-border', active);
         el.classList.toggle('text-white', active);
         el.classList.toggle('bg-white', !active);
@@ -257,7 +257,7 @@ function clearSelection() {
 function toggleCrossbar() {
     if (currentBreakType !== 'ebea') return;
     crossbarActive = !crossbarActive;
-    document.getElementById('crossbar-track').classList.toggle('bg-teal-500', crossbarActive);
+    document.getElementById('crossbar-track').classList.toggle('btn-eng-active', crossbarActive);
     document.getElementById('crossbar-track').classList.toggle('bg-gray-300', !crossbarActive);
     document.getElementById('crossbar-knob').classList.toggle('translate-x-5', crossbarActive);
 }

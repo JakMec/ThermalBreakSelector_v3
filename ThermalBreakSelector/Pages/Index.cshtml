@@ -34,38 +34,38 @@
         <!-- Project settings panel -->
         <div id="panel-project" class="hidden p-4">
             <div class="font-semibold text-sm mb-3">Project settings</div>
-            <div class="border border-gray-300 rounded-none p-3 mb-3">
+            <div class="border theme-border rounded-none p-3 mb-3">
                 <div class="text-black font-bold mb-2">Designer</div>
                 <label class="theme-text block mb-1">Company:</label>
                 <input type="text" id="proj-designer-company" 
-                       class="w-full border border-gray-300 rounded-none px-2 py-1 mb-2">
+                       class="w-full border theme-border rounded-none px-2 py-1 mb-2">
                 <label class="theme-text block mb-1">Address:</label>
                 <input type="text" id="proj-designer-address" 
-                       class="w-full border border-gray-300 rounded-none px-2 py-1 mb-2">
+                       class="w-full border theme-border rounded-none px-2 py-1 mb-2">
                 <label class="theme-text block mb-1">Phone:</label>
                 <input type="text" id="proj-designer-phone" 
-                       class="w-full border border-gray-300 rounded-none px-2 py-1 mb-2">
+                       class="w-full border theme-border rounded-none px-2 py-1 mb-2">
                 <label class="theme-text block mb-1">Name:</label>
                 <input type="text" id="proj-designer-name" 
-                       class="w-full border border-gray-300 rounded-none px-2 py-1 mb-2">
+                       class="w-full border theme-border rounded-none px-2 py-1 mb-2">
                 <label class="theme-text block mb-1">Email:</label>
                 <input type="text" id="proj-designer-email" 
-                       class="w-full border border-gray-300 rounded-none px-2 py-1">
+                       class="w-full border theme-border rounded-none px-2 py-1">
             </div>
-            <div class="border border-gray-300 rounded-none p-3">
+            <div class="border theme-border rounded-none p-3">
                 <div class="text-black font-bold mb-2">Project</div>
                 <label class="theme-text block mb-1">Company:</label>
                 <input type="text" id="proj-company" 
-                       class="w-full border border-gray-300 rounded-none px-2 py-1 mb-2">
+                       class="w-full border theme-border rounded-none px-2 py-1 mb-2">
                 <label class="theme-text block mb-1">Location:</label>
                 <input type="text" id="proj-location" 
-                       class="w-full border border-gray-300 rounded-none px-2 py-1 mb-2">
+                       class="w-full border theme-border rounded-none px-2 py-1 mb-2">
                 <label class="theme-text block mb-1">Contact person:</label>
                 <input type="text" id="proj-contact" 
-                       class="w-full border border-gray-300 rounded-none px-2 py-1 mb-2">
+                       class="w-full border theme-border rounded-none px-2 py-1 mb-2">
                 <label class="theme-text block mb-1">Comments:</label>
                 <textarea id="proj-comments"  rows="4"
-                          class="w-full border border-gray-300 rounded-none px-2 py-1 resize-none"></textarea>
+                          class="w-full border theme-border rounded-none px-2 py-1 resize-none"></textarea>
             </div>
         </div>
 
@@ -74,15 +74,15 @@
             <div class="font-semibold text-sm mb-3">File</div>
             <div class="flex flex-col gap-2">
                 <button onclick="openFile()"
-                        class="border border-gray-300 rounded-none px-3 py-2 text-left hover:bg-gray-50">Open file</button>
+                        class="border theme-border rounded-none px-3 py-2 text-left hover:bg-gray-50">Open file</button>
                 <button onclick="saveAsJSON()"
-                        class="border border-gray-300 rounded-none px-3 py-2 text-left hover:bg-gray-50">Save as</button>
+                        class="border theme-border rounded-none px-3 py-2 text-left hover:bg-gray-50">Save as</button>
                 <button onclick="printPDF()"
-                        class="border border-gray-300 rounded-none px-3 py-2 text-left hover:bg-gray-50">Print PDF</button>
+                        class="border theme-border rounded-none px-3 py-2 text-left hover:bg-gray-50">Print PDF</button>
                 <button onclick="exportCSV()"
-                        class="border border-gray-300 rounded-none px-3 py-2 text-left hover:bg-gray-50">Export CSV</button>
+                        class="border theme-border rounded-none px-3 py-2 text-left hover:bg-gray-50">Export CSV</button>
                 <button onclick="importCSV()"
-                        class="border border-gray-300 rounded-none px-3 py-2 text-left hover:bg-gray-50">Import CSV</button>
+                        class="border theme-border rounded-none px-3 py-2 text-left hover:bg-gray-50">Import CSV</button>
             </div>
         </div>
     </div>
@@ -91,24 +91,24 @@
     <div id="left-sidebar" class="w-64 shrink-0 overflow-y-auto border-r border-gray-200 bg-white">
 
         <!-- Section 1: Global inputs -->
-        <div class="border border-gray-300 m-2 p-2 rounded-none">
+        <div class="border theme-border m-2 p-2 rounded-none">
 
             <!-- Type of support -->
             <div class="theme-text font-semibold mb-1">Type of support</div>
             <div class="flex gap-1 mb-2">
                 <!-- Slab-to-Slab -->
                 <button id="support-slab-slab" onclick="setSupport('slab-slab')" title="Slab-to-Slab"
-                        class="support-btn flex-1 border border-gray-300 bg-white rounded-none p-1 flex justify-center items-center">
+                        class="support-btn flex-1 border theme-border bg-white rounded-none p-1 flex justify-center items-center">
                     <img src="/img/slab-slab.svg" class="w-8 h-8 object-contain" alt="Slab-to-Slab">
                 </button>
                 <!-- Slab-to-Wall -->
                 <button id="support-slab-wall" onclick="setSupport('slab-wall')" title="Short anchorage for slab-to-wall connection or offset connection"
-                        class="support-btn flex-1 border border-gray-300 bg-white rounded-none p-1 flex justify-center items-center">
+                        class="support-btn flex-1 border theme-border bg-white rounded-none p-1 flex justify-center items-center">
                     <img src="/img/slab-wall.svg" class="w-8 h-8 object-contain" alt="Slab-to-Wall">
                 </button>
                 <!-- Horizontal el. -->
                 <button id="support-horizontal" onclick="setSupport('horizontal')" title="Horizontal el."
-                        class="support-btn flex-1 border border-gray-300 bg-white rounded-none p-1 flex justify-center items-center">
+                        class="support-btn flex-1 border theme-border bg-white rounded-none p-1 flex justify-center items-center">
                     <img src="/img/horizontal-el.svg" class="w-10 h-6 object-contain" alt="Horizontal el.">
                 </button>
             </div>
@@ -117,28 +117,28 @@
             <div class="theme-text mb-1">Bending moment [kNm/m]</div>
             <div class="flex gap-1 mb-2">
                 <input type="number" id="bending-moment" placeholder="Bending moment" step="any"
-                       class="flex-1 border border-gray-300 rounded-none px-2 py-1 min-w-0 bg-white text-gray-900">
+                       class="flex-1 border theme-border rounded-none px-2 py-1 min-w-0 bg-white theme-text">
                 <button id="btn-bm-negBm" onclick="setLoadDir('bm','negBm')" title="Negative bending moment"
-                        class="border border-gray-300 bg-white rounded-none px-2 py-1 text-gray-500 hover:bg-gray-100 font-semibold leading-none">−</button>
+                        class="border theme-border bg-white rounded-none px-2 py-1 text-gray-500 hover:bg-gray-100 font-semibold leading-none">−</button>
                 <button id="btn-bm-posNegBm" onclick="setLoadDir('bm','posNegBm')" title="Positive and negative bending moment"
-                        class="border border-gray-300 bg-white rounded-none px-2 py-1 text-gray-500 hover:bg-gray-100 font-semibold leading-none">&plusmn;</button>
+                        class="border theme-border bg-white rounded-none px-2 py-1 text-gray-500 hover:bg-gray-100 font-semibold leading-none">&plusmn;</button>
             </div>
 
             <!-- Shear load -->
             <div class="theme-text mb-1">Shear load [kN/m]</div>
             <div class="flex gap-1 mb-2">
                 <input type="number" id="shear-load" placeholder="Shear load" step="any"
-                       class="flex-1 border border-gray-300 rounded-none px-2 py-1 min-w-0 bg-white text-gray-900">
+                       class="flex-1 border theme-border rounded-none px-2 py-1 min-w-0 bg-white theme-text">
                 <button id="btn-sl-posSl" onclick="setLoadDir('sl','posSl')" title="Positive shear load"
-                        class="border border-gray-300 bg-white rounded-none px-2 py-1 text-gray-500 hover:bg-gray-100 font-semibold leading-none">+</button>
+                        class="border theme-border bg-white rounded-none px-2 py-1 text-gray-500 hover:bg-gray-100 font-semibold leading-none">+</button>
                 <button id="btn-sl-posNegSl" onclick="setLoadDir('sl','posNegSl')" title="Positive and negative shear load"
-                        class="border border-gray-300 bg-white rounded-none px-2 py-1 text-gray-500 hover:bg-gray-100 font-semibold leading-none">&plusmn;</button>
+                        class="border theme-border bg-white rounded-none px-2 py-1 text-gray-500 hover:bg-gray-100 font-semibold leading-none">&plusmn;</button>
             </div>
 
             <!-- Horizontal load -->
             <div class="theme-text mb-1">Horizontal load [kN]</div>
             <input type="number" id="horizontal-load" placeholder="Horizontal load" step="any" disabled
-                   class="w-full border border-gray-300 rounded-none px-2 py-1 mb-2 bg-gray-100 text-gray-400 cursor-not-allowed">
+                   class="w-full border theme-border rounded-none px-2 py-1 mb-2 bg-gray-100 text-gray-400 cursor-not-allowed">
 
             <!-- Thermal insulation thickness -->
             <div class="theme-text mb-1">Thermal insulation thickness</div>
@@ -146,7 +146,7 @@
                 <button id="btn-iso80" onclick="selectInsulation('iso80')"
                         class="flex-1 border theme-border rounded-none-l py-1 bg-teal-500 text-white">ISO 80</button>
                 <button id="btn-iso120" onclick="selectInsulation('iso120')"
-                        class="flex-1 border border-gray-300 rounded-none-r py-1 bg-white text-gray-700">ISO 120</button>
+                        class="flex-1 border theme-border rounded-none-r py-1 bg-white text-gray-700">ISO 120</button>
             </div>
 
             <!-- Thermal break type -->
@@ -155,16 +155,16 @@
                 <button id="btn-ebea" onclick="selectBreakType('ebea')"
                         class="flex-1 border theme-border rounded-none-l py-1 bg-teal-500 text-white">EBEA</button>
                 <button id="btn-tebea" onclick="selectBreakType('tebea')"
-                        class="flex-1 border border-gray-300 rounded-none-r py-1 bg-white text-gray-700">TEBEA</button>
+                        class="flex-1 border theme-border rounded-none-r py-1 bg-white text-gray-700">TEBEA</button>
             </div>
 
             <!-- Balcony connector height -->
             <div class="theme-text mb-1">Balcony connector height</div>
-            <select id="connector-height" class="w-full border border-gray-300 rounded-none px-2 py-1 mb-2 bg-white"></select>
+            <select id="connector-height" class="w-full border theme-border rounded-none px-2 py-1 mb-2 bg-white"></select>
 
             <!-- Balcony slab concrete grade -->
             <div class="theme-text mb-1">Balcony slab concrete grade</div>
-            <select id="concrete-grade" class="w-full border border-gray-300 rounded-none px-2 py-1 mb-2 bg-white">
+            <select id="concrete-grade" class="w-full border theme-border rounded-none px-2 py-1 mb-2 bg-white">
                 <option>C20/25</option>
                 <option selected>C25/30</option>
                 <option>C30/37</option>
@@ -174,30 +174,30 @@
             <div class="flex gap-2 mb-2">
                 <div class="flex-1">
                     <div class="theme-text mb-1">Concrete cover</div>
-                    <select id="concrete-cover" class="w-full border border-gray-300 rounded-none px-2 py-1 bg-white"></select>
+                    <select id="concrete-cover" class="w-full border theme-border rounded-none px-2 py-1 bg-white"></select>
                 </div>
                 <div class="flex-1">
                     <div class="theme-text mb-1">Maximum utilization</div>
                     <input type="number" id="max-utilization" value="100" min="0" max="200"
-                           class="w-full border border-gray-300 rounded-none px-2 py-1 bg-white text-gray-900">
+                           class="w-full border theme-border rounded-none px-2 py-1 bg-white theme-text">
                 </div>
             </div>
 
             <!-- Select button -->
             <button onclick="selectProduct()"
-                    class="w-full border border-gray-300 bg-gray-100 hover:bg-gray-200 py-1.5 rounded-none mt-1">Select</button>
+                    class="w-full border theme-border bg-gray-100 hover:bg-gray-200 py-1.5 rounded-none mt-1">Select</button>
         </div>
 
         <!-- Section 2: Selected type -->
-        <div class="border border-gray-300 m-2 p-2 rounded-none">
+        <div class="border theme-border m-2 p-2 rounded-none">
 
             <div class="theme-text font-semibold mb-1">Selected type</div>
-            <select id="selected-type" onchange="onSelectedTypeChange()" class="w-full border border-gray-300 rounded-none px-2 py-1 mb-2 bg-white">
+            <select id="selected-type" onchange="onSelectedTypeChange()" class="w-full border theme-border rounded-none px-2 py-1 mb-2 bg-white">
                 <option value="">Select</option>
             </select>
 
             <div class="theme-text mb-1">Connector length [mm]</div>
-            <select id="connector-length" class="w-full border border-gray-300 rounded-none px-2 py-1 mb-2 bg-white"></select>
+            <select id="connector-length" class="w-full border theme-border rounded-none px-2 py-1 mb-2 bg-white"></select>
 
             <div class="flex items-center gap-2 mb-1">
                 <div class="theme-text">Anchorage length [mm]</div>
@@ -208,10 +208,10 @@
                    oninput="document.getElementById('anchorage-length-val').textContent=this.value">
 
             <div class="theme-text mb-1">Extra insulation on the top [mm]</div>
-            <select id="extra-ins-top" class="w-full border border-gray-300 rounded-none px-2 py-1 mb-2 bg-white"></select>
+            <select id="extra-ins-top" class="w-full border theme-border rounded-none px-2 py-1 mb-2 bg-white"></select>
 
             <div class="theme-text mb-1">Extra insulation in the bottom [mm]</div>
-            <select id="extra-ins-bottom" class="w-full border border-gray-300 rounded-none px-2 py-1 mb-2 bg-white"></select>
+            <select id="extra-ins-bottom" class="w-full border theme-border rounded-none px-2 py-1 mb-2 bg-white"></select>
 
             <div id="crossbar-row" class="flex items-center gap-2 mb-2 cursor-pointer" onclick="toggleCrossbar()">
                 <div class="relative w-10 h-5 shrink-0">
@@ -223,11 +223,11 @@
 
             <div class="theme-text mb-1">Position name</div>
             <input type="text" id="position-name" placeholder="Position"
-                   class="w-full border border-gray-300 rounded-none px-2 py-1 mb-2">
+                   class="w-full border theme-border rounded-none px-2 py-1 mb-2">
 
             <div class="flex gap-2 mt-1">
                 <input type="number" id="quantity" value="1" min="1"
-                       class="w-16 border border-gray-300 rounded-none px-2 py-1 bg-white text-gray-900">
+                       class="w-16 border theme-border rounded-none px-2 py-1 bg-white theme-text">
                 <button onclick="addToList()"
                         class="flex-1 bg-teal-500 hover:bg-teal-600 text-white rounded-none py-1">Add to list</button>
             </div>
@@ -263,7 +263,7 @@
         <!-- Action buttons -->
         <div id="action-btns" class="flex mb-2 shrink-0">
             <button onclick="deleteSelected()" title="Delete selected rows"
-                    class="border border-gray-300 rounded-none px-2 py-1 hover:bg-gray-50 flex items-center theme-text">
+                    class="border theme-border rounded-none px-2 py-1 hover:bg-gray-50 flex items-center theme-text">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                           d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
@@ -276,25 +276,25 @@
             <table class="border-collapse whitespace-nowrap" id="results-table">
                 <thead>
                     <tr>
-                        <th class="border border-gray-300 bg-gray-50 px-2 py-1 w-8 text-center">
+                        <th class="border theme-border bg-gray-50 px-2 py-1 w-8 text-center">
                             <input type="checkbox" id="select-all" onchange="toggleSelectAll(this.checked)" class="cursor-pointer">
                         </th>
-                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-left font-medium">No.</th>
-                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-left font-medium">Position</th>
-                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-left font-medium">Connector</th>
-                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">Length <span class="th-unit">[mm]</span></th>
-                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">Quantity <span class="th-unit">[pcs]</span></th>
-                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-center font-medium">Edit</th>
-                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">mEd <span class="th-unit">[kNm/m]</span></th>
-                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">mRd <span class="th-unit">[kNm/m]</span></th>
-                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-center font-medium">&eta;M <span class="th-unit">[-]</span></th>
-                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">vEd <span class="th-unit">[kN/m]</span></th>
-                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">vRd <span class="th-unit">[kN/m]</span></th>
-                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-center font-medium">&eta;V <span class="th-unit">[-]</span></th>
-                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">HEd <span class="th-unit">[kN]</span></th>
-                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">HRd <span class="th-unit">[kN]</span></th>
-                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-center font-medium">&eta;H <span class="th-unit">[-]</span></th>
-                        <th class="border border-gray-300 bg-gray-50 px-3 py-1 text-right font-medium">Stiffness <span class="th-unit">[kNm/rad/m]</span></th>
+                        <th class="border theme-border bg-gray-50 px-3 py-1 text-left font-medium">No.</th>
+                        <th class="border theme-border bg-gray-50 px-3 py-1 text-left font-medium">Position</th>
+                        <th class="border theme-border bg-gray-50 px-3 py-1 text-left font-medium">Connector</th>
+                        <th class="border theme-border bg-gray-50 px-3 py-1 text-right font-medium">Length <span class="th-unit">[mm]</span></th>
+                        <th class="border theme-border bg-gray-50 px-3 py-1 text-right font-medium">Quantity <span class="th-unit">[pcs]</span></th>
+                        <th class="border theme-border bg-gray-50 px-3 py-1 text-center font-medium">Edit</th>
+                        <th class="border theme-border bg-gray-50 px-3 py-1 text-right font-medium">mEd <span class="th-unit">[kNm/m]</span></th>
+                        <th class="border theme-border bg-gray-50 px-3 py-1 text-right font-medium">mRd <span class="th-unit">[kNm/m]</span></th>
+                        <th class="border theme-border bg-gray-50 px-3 py-1 text-center font-medium">&eta;M <span class="th-unit">[-]</span></th>
+                        <th class="border theme-border bg-gray-50 px-3 py-1 text-right font-medium">vEd <span class="th-unit">[kN/m]</span></th>
+                        <th class="border theme-border bg-gray-50 px-3 py-1 text-right font-medium">vRd <span class="th-unit">[kN/m]</span></th>
+                        <th class="border theme-border bg-gray-50 px-3 py-1 text-center font-medium">&eta;V <span class="th-unit">[-]</span></th>
+                        <th class="border theme-border bg-gray-50 px-3 py-1 text-right font-medium">HEd <span class="th-unit">[kN]</span></th>
+                        <th class="border theme-border bg-gray-50 px-3 py-1 text-right font-medium">HRd <span class="th-unit">[kN]</span></th>
+                        <th class="border theme-border bg-gray-50 px-3 py-1 text-center font-medium">&eta;H <span class="th-unit">[-]</span></th>
+                        <th class="border theme-border bg-gray-50 px-3 py-1 text-right font-medium">Stiffness <span class="th-unit">[kNm/rad/m]</span></th>
                     </tr>
                 </thead>
                 <tbody id="table-body"></tbody>
@@ -308,15 +308,15 @@
             <div class="font-semibold text-sm mb-4">Edit row</div>
             <div class="mb-3">
                 <label class="theme-text block mb-1">Position name</label>
-                <input type="text" id="edit-position" class="w-full border border-gray-300 rounded-none px-2 py-1">
+                <input type="text" id="edit-position" class="w-full border theme-border rounded-none px-2 py-1">
             </div>
             <div class="mb-4">
                 <label class="theme-text block mb-1">Quantity [pcs]</label>
-                <input type="number" id="edit-quantity" min="1" class="w-full border border-gray-300 rounded-none px-2 py-1">
+                <input type="number" id="edit-quantity" min="1" class="w-full border theme-border rounded-none px-2 py-1">
             </div>
             <div class="flex gap-2 justify-end">
                 <button onclick="closeEditModal()"
-                        class="border border-gray-300 rounded-none px-4 py-1 hover:bg-gray-50">Cancel</button>
+                        class="border theme-border rounded-none px-4 py-1 hover:bg-gray-50">Cancel</button>
                 <button onclick="saveEdit()"
                         class="bg-teal-500 text-white rounded-none px-4 py-1 hover:bg-teal-600">Save</button>
             </div>

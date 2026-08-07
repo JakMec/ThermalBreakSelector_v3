@@ -1,58 +1,66 @@
 :root {
-    --primary: #09a9b5;
-    --primary-hover: #0895a0;
-    --primary-light: #c8eef1;
+    --primary: #00B0B9;         /* Teal header and active highlights */
+    --primary-hover: #007F86;   /* Darker teal for button hover states */
+    --primary-light: #99DFE3;   /* Light tint used inside icons */
 
-    --border: #09a9b5;
+    --border: #00B0B9;          /* Teal border outline for selected items */
+    --border-gray: #007F86;        /* Default border for inputs and unselected items */
 
-    --panel-bg: #e6e6e6;
-    --tab-bg: #8d9195;
+    --panel-bg: #FFFFFF;        /* Outer card/panel light grey background */
+    --tab-bg: #767a7d;          /* Inactive tab dark gray color */
 
-    --text-dark: #333;
+    --text-st: #333F48;         /* Main text colour, Peikko-dark-gray */
+
+    --text-dark: #7C878E;       /* Form label text color, Peikko-grey */
+    --text-muted: #666666;      /* Unit indicator text color */
 }
 
-/* Custom utility bindings for theme styling */
+.theme-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.theme-primary:hover {
+    background: var(--primary-hover);
+}
+
+.theme-border {
+    border-color: var(--border);
+}
+
+.theme-panel {
+    background: var(--panel-bg);
+}
+
 .theme-text {
     color: var(--text-dark);
 }
 
-.theme-border {
-    border-color: var(--border) !important;
+.btn-eng {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 0;
+    color: var(--text-dark);
 }
 
-.bg-theme-panel {
-    background-color: var(--panel-bg);
+.btn-eng:hover {
+    background: var(--primary-light);
+}
+/* for activ button selection */
+.btn-eng-active {
+    background: var(--primary);
+    color: white;
+    border: 1px solid var(--primary);
 }
 
-.bg-theme-tab {
-    background-color: var(--tab-bg);
+.tab {
+    background: #8c8f92;
+    color: white;
+    border-right: 1px solid #d7d7d7;
 }
 
-.rounded-none-l {
-    border-top-left-radius: 0.125rem;
-    border-bottom-left-radius: 0.125rem;
-}
-
-.rounded-none-r {
-    border-top-right-radius: 0.125rem;
-    border-bottom-right-radius: 0.125rem;
-}
-
-/* Button Toggle Group States */
-.btn-toggle-active {
-    background-color: var(--primary) !important;
-    border-color: var(--border) !important;
-    color: #ffffff !important;
-}
-
-.btn-toggle-inactive {
-    background-color: #ffffff !important;
-    border-color: #d1d5db !important; /* light gray border */
-    color: #374151 !important;
-}
-
-/* Image/Support Selection Button States */
-.support-btn.active {
-    border: 2px solid var(--primary) !important;
-    background-color: var(--primary-light) !important;
+.tab-active {
+    background: white;
+    color: var(--primary);
+    font-weight: 600;
 }
