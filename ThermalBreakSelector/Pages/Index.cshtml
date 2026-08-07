@@ -9,19 +9,19 @@
 
     <!-- Narrow left navigation -->
     <nav class="w-10 bg-gray-100 border-r border-gray-200 flex flex-col items-center py-2 gap-1 shrink-0 z-10">
-        <button onclick="navTo('main')" class="w-8 h-8 flex items-center justify-center rounded-none hover:bg-gray-200 text-gray-600" title="Main">
+        <button onclick="navTo('main')" class="w-8 h-8 flex items-center justify-center rounded-none hover:bg-gray-200 text-[var(--primary)]" title="Main">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
             </svg>
         </button>
-        <button onclick="navTo('project')" class="w-8 h-8 flex items-center justify-center rounded-none hover:bg-gray-200 text-gray-600" title="Project settings">
+        <button onclick="navTo('project')" class="w-8 h-8 flex items-center justify-center rounded-none hover:bg-gray-200 text-[var(--primary)]" title="Project settings">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
             </svg>
         </button>
-        <button onclick="navTo('file')" class="w-8 h-8 flex items-center justify-center rounded-none hover:bg-gray-200 text-gray-600" title="File operations">
+        <button onclick="navTo('file')" class="w-8 h-8 flex items-center justify-center rounded-none hover:bg-gray-200 text-[var(--primary)]" title="File operations">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
             </svg>
@@ -36,35 +36,35 @@
             <div class="font-semibold text-sm mb-3">Project settings</div>
             <div class="border border-gray-300 rounded-none p-3 mb-3">
                 <div class="text-black font-bold mb-2">Designer</div>
-                <label class="text-gray-600 block mb-1">Company:</label>
-                <input type="text" id="proj-designer-company" placeholder="Placeholder"
+                <label class="theme-text block mb-1">Company:</label>
+                <input type="text" id="proj-designer-company" 
                        class="w-full border border-gray-300 rounded-none px-2 py-1 mb-2">
-                <label class="text-gray-600 block mb-1">Address:</label>
-                <input type="text" id="proj-designer-address" placeholder="Placeholder"
+                <label class="theme-text block mb-1">Address:</label>
+                <input type="text" id="proj-designer-address" 
                        class="w-full border border-gray-300 rounded-none px-2 py-1 mb-2">
-                <label class="text-gray-600 block mb-1">Phone:</label>
-                <input type="text" id="proj-designer-phone" placeholder="Placeholder"
+                <label class="theme-text block mb-1">Phone:</label>
+                <input type="text" id="proj-designer-phone" 
                        class="w-full border border-gray-300 rounded-none px-2 py-1 mb-2">
-                <label class="text-gray-600 block mb-1">Name:</label>
-                <input type="text" id="proj-designer-name" placeholder="Placeholder"
+                <label class="theme-text block mb-1">Name:</label>
+                <input type="text" id="proj-designer-name" 
                        class="w-full border border-gray-300 rounded-none px-2 py-1 mb-2">
-                <label class="text-gray-600 block mb-1">Email:</label>
-                <input type="text" id="proj-designer-email" placeholder="Placeholder"
+                <label class="theme-text block mb-1">Email:</label>
+                <input type="text" id="proj-designer-email" 
                        class="w-full border border-gray-300 rounded-none px-2 py-1">
             </div>
             <div class="border border-gray-300 rounded-none p-3">
                 <div class="text-black font-bold mb-2">Project</div>
-                <label class="text-gray-600 block mb-1">Company:</label>
-                <input type="text" id="proj-company" placeholder="Placeholder"
+                <label class="theme-text block mb-1">Company:</label>
+                <input type="text" id="proj-company" 
                        class="w-full border border-gray-300 rounded-none px-2 py-1 mb-2">
-                <label class="text-gray-600 block mb-1">Location:</label>
-                <input type="text" id="proj-location" placeholder="Placeholder"
+                <label class="theme-text block mb-1">Location:</label>
+                <input type="text" id="proj-location" 
                        class="w-full border border-gray-300 rounded-none px-2 py-1 mb-2">
-                <label class="text-gray-600 block mb-1">Contact person:</label>
-                <input type="text" id="proj-contact" placeholder="Placeholder"
+                <label class="theme-text block mb-1">Contact person:</label>
+                <input type="text" id="proj-contact" 
                        class="w-full border border-gray-300 rounded-none px-2 py-1 mb-2">
-                <label class="text-gray-600 block mb-1">Comments:</label>
-                <textarea id="proj-comments" placeholder="Placeholder" rows="4"
+                <label class="theme-text block mb-1">Comments:</label>
+                <textarea id="proj-comments"  rows="4"
                           class="w-full border border-gray-300 rounded-none px-2 py-1 resize-none"></textarea>
             </div>
         </div>
@@ -263,7 +263,7 @@
         <!-- Action buttons -->
         <div id="action-btns" class="flex mb-2 shrink-0">
             <button onclick="deleteSelected()" title="Delete selected rows"
-                    class="border border-gray-300 rounded-none px-2 py-1 hover:bg-gray-50 flex items-center text-gray-600">
+                    class="border border-gray-300 rounded-none px-2 py-1 hover:bg-gray-50 flex items-center theme-text">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                           d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
@@ -307,11 +307,11 @@
         <div class="bg-white rounded-none-lg shadow-xl p-6 w-72">
             <div class="font-semibold text-sm mb-4">Edit row</div>
             <div class="mb-3">
-                <label class="text-gray-600 block mb-1">Position name</label>
+                <label class="theme-text block mb-1">Position name</label>
                 <input type="text" id="edit-position" class="w-full border border-gray-300 rounded-none px-2 py-1">
             </div>
             <div class="mb-4">
-                <label class="text-gray-600 block mb-1">Quantity [pcs]</label>
+                <label class="theme-text block mb-1">Quantity [pcs]</label>
                 <input type="number" id="edit-quantity" min="1" class="w-full border border-gray-300 rounded-none px-2 py-1">
             </div>
             <div class="flex gap-2 justify-end">
