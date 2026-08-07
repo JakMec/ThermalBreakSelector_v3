@@ -64,3 +64,9 @@
     color: var(--primary);
     font-weight: 600;
 }
+
+/* Active navigation button highlight */
+.nav-btn.active {
+    background-color: var(--primary);
+    color: white ;
+}

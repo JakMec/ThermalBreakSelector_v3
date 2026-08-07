@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "C:\\PeikkoDesigner Repository\\ThermalBreakSelector_v3\\ThermalBreakSelector\\ThermalBreakSelector.csproj": {}
+    "C:\\CSharp_projects\\ThermalBreakSelector_v3\\ThermalBreakSelector\\ThermalBreakSelector.csproj": {}
   },
   "projects": {
-    "C:\\PeikkoDesigner Repository\\ThermalBreakSelector_v3\\ThermalBreakSelector\\ThermalBreakSelector.csproj": {
+    "C:\\CSharp_projects\\ThermalBreakSelector_v3\\ThermalBreakSelector\\ThermalBreakSelector.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\PeikkoDesigner Repository\\ThermalBreakSelector_v3\\ThermalBreakSelector\\ThermalBreakSelector.csproj",
+        "projectUniqueName": "C:\\CSharp_projects\\ThermalBreakSelector_v3\\ThermalBreakSelector\\ThermalBreakSelector.csproj",
         "projectName": "ThermalBreakSelector",
-        "projectPath": "C:\\PeikkoDesigner Repository\\ThermalBreakSelector_v3\\ThermalBreakSelector\\ThermalBreakSelector.csproj",
-        "packagesPath": "C:\\Users\\mecarjak\\.nuget\\packages\\",
-        "outputPath": "C:\\PeikkoDesigner Repository\\ThermalBreakSelector_v3\\ThermalBreakSelector\\obj\\",
+        "projectPath": "C:\\CSharp_projects\\ThermalBreakSelector_v3\\ThermalBreakSelector\\ThermalBreakSelector.csproj",
+        "packagesPath": "C:\\Users\\jakub\\.nuget\\packages\\",
+        "outputPath": "C:\\CSharp_projects\\ThermalBreakSelector_v3\\ThermalBreakSelector\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\mecarjak\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\jakub\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -62,7 +64,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.204/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.203/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.AspNetCore": "(,10.0.32767]",
             "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",

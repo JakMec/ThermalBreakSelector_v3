@@ -763,8 +763,15 @@ function printPDF() {
     window.print();
 }
 
-// ── Navigation ────────────────────────────────────────────────────────────
-function navTo(panel) {
+/// ── Navigation ────────────────────────────────────────────────────────────
+function navTo(panel, btnElement) {
+    // 1. Update active styling on navigation buttons
+    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+    if (btnElement) {
+        btnElement.classList.add('active');
+    }
+
+    // 2. Handle overlay panel visibility
     const overlay = document.getElementById('overlay-panel');
     if (panel === 'main') {
         overlay.classList.add('hidden');
