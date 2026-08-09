@@ -4,7 +4,7 @@
     --primary-light: #99DFE3;   /* Light tint used inside icons */
 
     --border: #00B0B9;          /* Teal border outline for selected items */
-    --border-gray: #007F86;        /* Default border for inputs and unselected items */
+    --border-gray: #767a7d;        /* Default border for inputs and unselected items */
 
     --panel-bg: #FFFFFF;        /* Outer card/panel light grey background */
     --tab-bg: #767a7d;          /* Inactive tab dark gray color */
@@ -25,7 +25,7 @@
 }
 
 .theme-border {
-    border-color: var(--border);
+    border-color: var(--border-gray);
 }
 
 .theme-panel {
@@ -34,6 +34,10 @@
 
 .theme-text {
     color: var(--text-dark);
+}
+
+.btn-theme-border {
+    border-color: var(--border)!important;
 }
 
 .btn-eng {

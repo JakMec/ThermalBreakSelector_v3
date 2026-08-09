@@ -98,17 +98,17 @@
             <div class="flex gap-1 mb-2">
                 <!-- Slab-to-Slab -->
                 <button id="support-slab-slab" onclick="setSupport('slab-slab')" title="Slab-to-Slab"
-                        class="support-btn flex-1 border theme-border bg-white rounded-none p-1 flex justify-center items-center">
+                        class="support-btn flex-1 border btn-theme-border bg-white rounded-none p-1 flex justify-center items-center">
                     <img src="/img/slab-slab.svg" class="w-8 h-8 object-contain" alt="Slab-to-Slab">
                 </button>
                 <!-- Slab-to-Wall -->
                 <button id="support-slab-wall" onclick="setSupport('slab-wall')" title="Short anchorage for slab-to-wall connection or offset connection"
-                        class="support-btn flex-1 border theme-border bg-white rounded-none p-1 flex justify-center items-center">
+                        class="support-btn flex-1 border btn-theme-border bg-white rounded-none p-1 flex justify-center items-center">
                     <img src="/img/slab-wall.svg" class="w-8 h-8 object-contain" alt="Slab-to-Wall">
                 </button>
                 <!-- Horizontal el. -->
                 <button id="support-horizontal" onclick="setSupport('horizontal')" title="Horizontal el."
-                        class="support-btn flex-1 border theme-border bg-white rounded-none p-1 flex justify-center items-center">
+                        class="support-btn flex-1 border btn-theme-border bg-white rounded-none p-1 flex justify-center items-center">
                     <img src="/img/horizontal-el.svg" class="w-10 h-6 object-contain" alt="Horizontal el.">
                 </button>
             </div>
@@ -119,20 +119,20 @@
                 <input type="number" id="bending-moment" placeholder="Bending moment" step="any"
                        class="flex-1 border theme-border rounded-none px-2 py-1 min-w-0 bg-white theme-text">
                 <button id="btn-bm-negBm" onclick="setLoadDir('bm','negBm')" title="Negative bending moment"
-                        class="border theme-border bg-white rounded-none px-2 py-1 text-gray-500 hover:bg-gray-100 font-semibold leading-none">−</button>
+                        class="border btn-theme-border bg-white rounded-none px-2 py-1 text-gray-500 hover:bg-gray-100 font-semibold leading-none">−</button>
                 <button id="btn-bm-posNegBm" onclick="setLoadDir('bm','posNegBm')" title="Positive and negative bending moment"
-                        class="border theme-border bg-white rounded-none px-2 py-1 text-gray-500 hover:bg-gray-100 font-semibold leading-none">&plusmn;</button>
+                        class="border btn-theme-border bg-white rounded-none px-2 py-1 text-gray-500 hover:bg-gray-100 font-semibold leading-none">&plusmn;</button>
             </div>
 
             <!-- Shear load -->
             <div class="theme-text mb-1">Shear load [kN/m]</div>
             <div class="flex gap-1 mb-2">
                 <input type="number" id="shear-load" placeholder="Shear load" step="any"
-                       class="flex-1 border theme-border rounded-none px-2 py-1 min-w-0 bg-white theme-text">
+                       class="flex-1 border btn-theme-border rounded-none px-2 py-1 min-w-0 bg-white theme-text">
                 <button id="btn-sl-posSl" onclick="setLoadDir('sl','posSl')" title="Positive shear load"
-                        class="border theme-border bg-white rounded-none px-2 py-1 text-gray-500 hover:bg-gray-100 font-semibold leading-none">+</button>
+                        class="border btn-theme-border bg-white rounded-none px-2 py-1 text-gray-500 hover:bg-gray-100 font-semibold leading-none">+</button>
                 <button id="btn-sl-posNegSl" onclick="setLoadDir('sl','posNegSl')" title="Positive and negative shear load"
-                        class="border theme-border bg-white rounded-none px-2 py-1 text-gray-500 hover:bg-gray-100 font-semibold leading-none">&plusmn;</button>
+                        class="border btn-theme-border bg-white rounded-none px-2 py-1 text-gray-500 hover:bg-gray-100 font-semibold leading-none">&plusmn;</button>
             </div>
 
             <!-- Horizontal load -->
@@ -144,18 +144,18 @@
             <div class="theme-text mb-1">Thermal insulation thickness</div>
             <div class="flex mb-2">
                 <button id="btn-iso80" onclick="selectInsulation('iso80')"
-                        class="flex-1 border theme-border rounded-none-l py-1 bg-teal-500 text-white">ISO 80</button>
+                        class="flex-1 border btn-theme-border rounded-none-l py-1 theme-primary text-white">ISO 80</button>
                 <button id="btn-iso120" onclick="selectInsulation('iso120')"
-                        class="flex-1 border theme-border rounded-none-r py-1 bg-white text-gray-700">ISO 120</button>
+                        class="flex-1 border btn-theme-border rounded-none-r py-1 bg-white text-gray-700">ISO 120</button>
             </div>
 
             <!-- Thermal break type -->
             <div class="theme-text mb-1">Thermal break type</div>
             <div class="flex mb-2">
                 <button id="btn-ebea" onclick="selectBreakType('ebea')"
-                        class="flex-1 border theme-border rounded-none-l py-1 bg-teal-500 text-white">EBEA</button>
+                        class="flex-1 border btn-theme-border rounded-none-l py-1 theme-primary text-white">EBEA</button>
                 <button id="btn-tebea" onclick="selectBreakType('tebea')"
-                        class="flex-1 border theme-border rounded-none-r py-1 bg-white text-gray-700">TEBEA</button>
+                        class="flex-1 border btn-theme-border rounded-none-r py-1 bg-white text-gray-700">TEBEA</button>
             </div>
 
             <!-- Balcony connector height -->
@@ -229,7 +229,7 @@
                 <input type="number" id="quantity" value="1" min="1"
                        class="w-16 border theme-border rounded-none px-2 py-1 bg-white theme-text">
                 <button onclick="addToList()"
-                        class="flex-1 bg-teal-500 hover:bg-teal-600 text-white rounded-none py-1">Add to list</button>
+                        class="flex-1 theme-primary hover:bg-teal-600 text-white rounded-none py-1">Add to list</button>
             </div>
         </div>
     </div>
@@ -318,7 +318,7 @@
                 <button onclick="closeEditModal()"
                         class="border theme-border rounded-none px-4 py-1 hover:bg-gray-50">Cancel</button>
                 <button onclick="saveEdit()"
-                        class="bg-teal-500 text-white rounded-none px-4 py-1 hover:bg-teal-600">Save</button>
+                        class="theme-primary text-white rounded-none px-4 py-1 hover:bg-teal-600">Save</button>
             </div>
         </div>
     </div>

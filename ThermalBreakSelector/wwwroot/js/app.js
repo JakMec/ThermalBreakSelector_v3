@@ -127,11 +127,11 @@ function setSupport(type) {
         const btn = document.getElementById(`support-${t}`);
         if (!btn) return;
         const active = t === type;
-        btn.classList.toggle('theme-border', active);
+        
+        btn.classList.toggle('btn-theme-border', active);
         btn.classList.toggle('border-2', active);
         btn.classList.toggle('btn-eng-active', active);
         btn.classList.toggle('text-white', active);
-        btn.classList.toggle('border-gray-300', !active);
         btn.classList.toggle('bg-white', !active);
         btn.classList.toggle('text-gray-600', !active);
     });

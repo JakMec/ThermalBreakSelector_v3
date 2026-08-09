@@ -201,5 +201,5 @@ C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.
 C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.0\compressed\vza7syvei4-{0}-devvcybxyz-devvcybxyz.gz
 C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.0\compressed\mbp18lvavo-{0}-tb0eypd5mf-tb0eypd5mf.gz
 C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.0\compressed\qbahck8c7f-{0}-73md0qy54h-73md0qy54h.gz
-C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.0\compressed\fizzhammry-{0}-uq9kv7bdzo-uq9kv7bdzo.gz
-C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.0\compressed\f1l3fzkyoi-{0}-13eogt59az-13eogt59az.gz
+C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.0\compressed\fizzhammry-{0}-7tpfsj160x-7tpfsj160x.gz
+C:\CSharp_projects\ThermalBreakSelector_v3\ThermalBreakSelector\obj\Debug\net10.0\compressed\f1l3fzkyoi-{0}-wlmb3cjrrf-wlmb3cjrrf.gz
